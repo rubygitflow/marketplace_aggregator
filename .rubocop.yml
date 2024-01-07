@@ -1,0 +1,152 @@
+require:
+  - rubocop-rspec
+
+RSpec/FilePath:
+  Enabled: false
+
+RSpec/MultipleExpectations:
+  Max: 7
+
+# 5
+RSpec/MultipleMemoizedHelpers:
+  Max: 25
+
+RSpec/LetSetup:
+  Enabled: false
+
+# 10
+RSpec/ExampleLength:
+  Max: 35
+
+# 3
+RSpec/NestedGroups:
+  Max: 7
+
+RSpec/NamedSubject:
+  Enabled: false
+
+AllCops:
+  Exclude:
+    - bin/**/*
+    - db/**/*
+    - spec/rails_helper.rb
+    - spec/spec_helper.rb
+    - vendor/**/*
+    - lib/tasks/marketplace_credentials.rake
+  SuggestExtensions: false
+  TargetRubyVersion: 3.2
+
+Style/Documentation:
+  Description: 'Document classes and non-namespace modules.'
+  Enabled: false
+
+Metrics/MethodLength:
+  Max: 20
+
+# 40
+Metrics/BlockLength:
+  Exclude:
+    - Rakefile
+    - config/routes.rb
+    - app/controllers/**/*
+    - spec/**/*
+    - lib/tasks/**/*
+  Max: 60
+
+Style/AsciiComments:
+  Enabled: false
+
+Lint/ImplicitStringConcatenation:
+  Exclude:
+    - app/controllers/api/v1/reports_controller.rb
+
+Lint/UselessAssignment:
+  Severity: refactor
+
+Style/CommentAnnotation:
+  Enabled: false
+
+Style/GuardClause:
+  Enabled: false
+
+Naming/PredicateName:
+  Enabled: false
+
+Naming/MemoizedInstanceVariableName:
+  Enabled: false
+
+Style/ClassVars:
+  Enabled: false
+
+Naming/MethodParameterName:
+  Enabled: false
+
+Naming/VariableNumber:
+  EnforcedStyle: snake_case
+  Enabled: false
+
+Naming/AccessorMethodName:
+  Enabled: false
+
+Style/Lambda:
+  EnforcedStyle: literal
+
+Style/MultilineBlockChain:
+  Enabled: false
+
+Naming/MethodName:
+  Enabled: false
+
+Metrics/BlockNesting:
+  Enabled: false
+
+Style/GlobalVars:
+  Enabled: false
+
+Layout/RescueEnsureAlignment:
+  Enabled: false
+
+Security/Open:
+  Enabled: false
+
+Layout/MultilineMethodCallIndentation:
+  Enabled: false
+
+Style/TernaryParentheses:
+  Enabled: false
+
+Layout/EndAlignment:
+  Enabled: false
+
+Layout/ElseAlignment:
+  Enabled: false
+
+Metrics/ParameterLists:
+  Max: 10
+
+Layout/BlockAlignment:
+  Enabled: false
+
+Lint/AssignmentInCondition:
+  Enabled: false
+
+Lint/UnderscorePrefixedVariableName:
+  Enabled: false
+
+Layout/HashAlignment:
+  Enabled: false
+
+Lint/MissingSuper:
+  Enabled: false
+
+Lint/UnusedMethodArgument:
+  Enabled: false
+
+Lint/HashCompareByIdentity:
+  Enabled: false
+
+Style/OptionalBooleanParameter:
+  Enabled: false
+
+Style/StringConcatenation:
+  Enabled: false

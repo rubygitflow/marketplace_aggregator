@@ -1,0 +1,19 @@
+{
+  "result": 
+  {
+    "items": 
+    [
+      {
+        "product_id": 36735313,
+        "offer_id": "168133",
+        "stocks": [{"type": "fbs", "present": 3, "reserved": 0}]
+      },
+      {
+        "product_id": 36054160,
+        "offer_id": "168134",
+        "stocks": []
+      }
+    ],
+    "total": 4
+  }
+}

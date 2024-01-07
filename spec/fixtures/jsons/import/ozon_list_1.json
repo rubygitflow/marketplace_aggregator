@@ -1,0 +1,21 @@
+{
+  "result":
+  {
+    "items":
+    [
+      {
+        "product_id": 36052119,
+        "offer_id": "168131",
+        "stocks": [  {"type": "fbo", "present": 5, "reserved": 0}, 
+                     {"type": "fbs", "present": 7, "reserved": 0},
+                     {"type": "discounted", "present": 1, "reserved": 0}]
+      },
+      {
+        "product_id": 36054159,
+        "offer_id": "168132",
+        "stocks": [{"type": "fbo", "present": 4, "reserved": 0}]
+      }
+    ],
+    "total": 4
+  }
+}
