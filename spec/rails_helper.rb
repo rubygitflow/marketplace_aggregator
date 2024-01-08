@@ -8,8 +8,8 @@ require 'spec_helper'
 require 'faker'
 require 'support/factory_bot'
 
-# require 'sidekiq/testing'
-# Sidekiq::Testing.fake!
+require 'sidekiq/testing'
+Sidekiq::Testing.fake!
 
 ENV['RAILS_ENV'] ||= 'test'
 require_relative '../config/environment'

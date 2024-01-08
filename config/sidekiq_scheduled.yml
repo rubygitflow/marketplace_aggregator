@@ -1,0 +1,9 @@
+# equal for the all
+
+:timeout: 10
+:concurrency: <%= ENV.fetch("SIDEKIQ_CONCURRENCY") { 10 } %>
+:max_retries: 0
+:queues:
+  - [marketplace_grabber_products, 1]
+  - [marketplace_grabber_orders, 1]
+  - [marketplace_grabber_transactions, 1]
