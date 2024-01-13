@@ -2,12 +2,12 @@
   "status": "OK",
   "result": 
   {
-    "offerMappingEntries": 
+    "offerMappings": 
     [
       {
         "offer": 
         {
-          "shopSku": "Vendor002.26194",
+          "offerId": "Vendor002.26194",
           "name": "Сумка поясная Яндекс (размер S), красный",
           "category": "Сувениры",
           "manufacturer": "ООО «Яндекс», Россия, Москва, ул. Льва Толстого, 16",
@@ -57,7 +57,7 @@
       {
         "offer": 
         {
-          "shopSku": "Vendor002.26179",
+          "offerId": "Vendor002.26179",
           "name": "Сумка поясная Яндекс (размер L), белый",
           "category": "Сувениры",
           "manufacturer": "ООО «Яндекс», Россия, Москва, ул. Льва Толстого, 16",

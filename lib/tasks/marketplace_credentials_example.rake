@@ -31,7 +31,7 @@ namespace :marketplace_credentials do
 
     MarketplaceCredential.find_or_create_by(id: 'e364829e-4b76-484c-b39c-77ca8b058085') do |mc|
       mc.client_id = user.id
-      mc.marketplace_id = Marketplace.yandex.id
+      mc.marketplace_id = Marketplace.ozon.id
       mc.instance_name = 'any_client_login_to_the_app'
       mc.credentials = {
         api_key: 'client_API-KEY_from_ozon_marketplace',

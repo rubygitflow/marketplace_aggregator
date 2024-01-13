@@ -30,3 +30,15 @@ Look at the test coverage:
 ```bash
 $ open coverage/index.html
 ```
+
+* Import products from marketplaces
+Scheduled launch
+```bash
+$ clockwork clock.rb
+```
+or cause immediately
+```bash
+$ rails c
+$ MarketplaceInteraction::ImportProductsJob.perform_now
+```
+Review the changes in the database

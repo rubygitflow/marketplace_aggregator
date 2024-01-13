@@ -26,10 +26,16 @@ gem 'kredis', '~> 1.7'
 
 gem 'sidekiq', '~> 7.2'
 
+gem 'clockwork', '~> 3.0', '>= 3.0.2'
+
+gem 'faraday', '~> 2.9'
+gem 'faraday-retry', '~> 2.2'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'database_cleaner-active_record', '~> 2.1'
+  gem 'dotenv-rails', '~> 2.8', '>= 2.8.1'
   gem 'factory_bot_rails', '~> 6.4'
   gem 'faker', '~> 3.2'
   gem 'rspec-rails', '~> 6.1'
