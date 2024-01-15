@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require './app/business_logic/handles/products_downloader'
-
 module Yandex
   class ProductsDownloader
     module DownloadingScheme
@@ -18,7 +16,7 @@ module Yandex
       end
 
       def downloading_archived_products
-        if BusinessLogic::Handles::ProductsDownloader.from_archive
+        if Handles::ProductsDownloader.from_archive
           @archive = true
           circle_downloader
         end
@@ -53,7 +51,7 @@ module Yandex
           if page_token.blank?
             break
           else
-            page_tokens = { page_token: page_token }
+            page_tokens = { page_token: }
           end
         end
       end

@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require './app/business_logic/handles/products_downloader'
-
 module Yandex
   class ProductsDownloader
     module ImportingScheme
@@ -29,7 +27,7 @@ module Yandex
         @product.barcodes = offer.fetch(:barcodes, [])
         @product.price = "(#{offer.dig(:basicPrice, :value) || 0},#{offer.dig(:basicPrice, :currencyId) || 'RUR'})"
         @product.status = (@archive ? 'archived' : nil) ||
-                          BusinessLogic::Handles::ProductsDownloader.take_card_status(offer)
+                          Handles::ProductsDownloader.take_card_status(offer)
         @product.schemes = offer.fetch(:sellingPrograms, []).filter_map do |elem|
           elem[:sellingProgram] if elem[:status] == 'FINE'
         end

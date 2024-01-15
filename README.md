@@ -1,7 +1,19 @@
 # marketplace_aggregator
-An example of connecting to marketplaces and downloading data from them
+_An example of connecting to marketplaces and downloading data from them_
 
 [![Test&Lint](https://github.com/rubygitflow/marketplace_aggregator/actions/workflows/rubyonrails.yml/badge.svg)](https://github.com/rubygitflow/marketplace_aggregator/actions)
+
+An Example of working with the Yandex.Market marketplace API
+
+**The project demonstrates:**
+
+— Using UUIDs in tables with sensitive information instead of the usual numeric IDs;
+— Using PostgreSql native data types - Array, Enumerated, Hstore, Composite Types;
+— Setting up queues in Sidekiq;
+— Logging of critical events when interacting with the API of marketplace.
+— Code coverage with RSpec tests;
+— Enabling GitHub Actions;
+— Particular emphasis is placed on separating business logic from the algorithmic solution.
 
 * Install
 1. Clone this app from GitHub

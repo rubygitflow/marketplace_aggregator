@@ -52,9 +52,9 @@ jobs:
       - name: Set up database schema
         run: bin/rails db:schema:load
       # Add sidekiq setup steps here
-      - name: Activate sidekiq process for live ActiveJobs
-        run: |
-          bundle exec sidekiq -C config/sidekiq_live.yml
+      # - name: Activate sidekiq process for live ActiveJobs
+      #   run: |
+      #     bundle exec sidekiq -C config/sidekiq_live.yml
       - name: Activate sidekiq process for scheduled ActiveJobs
         run: |
           bundle exec sidekiq -C config/sidekiq_scheduled.yml

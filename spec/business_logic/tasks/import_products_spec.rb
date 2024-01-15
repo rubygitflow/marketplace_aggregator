@@ -1,9 +1,8 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-require './app/business_logic/tasks/import_products'
 
-RSpec.describe BusinessLogic::Tasks::ImportProducts, type: :business_logic do
+RSpec.describe Tasks::ImportProducts, type: :business_logic do
   context 'with valid credentials after invalid credentials' do
     let!(:marketplace_credential) { create(:marketplace_credential, :yandex) }
     let!(:task) { described_class.new }
