@@ -34,3 +34,6 @@
 
 # Ignore secret seeds
 /lib/tasks/marketplace_credentials.rake
+
+# Ignore simplecov stat
+/coverage/*
