@@ -23,7 +23,7 @@ $ rails db:create
 $ rails db:schema:load
 $ rails bd:seed
 ```
-4. Add the existing credentials from marketplaces to the [rake task](https://github.com/rubygitflow/mea_publisher/tree/master/lib/tasks/marketplace_credentials_example.rake)
+4. Add the existing credentials from marketplaces to the [rake task](https://github.com/rubygitflow/marketplace_aggregator/tree/master/lib/tasks/marketplace_credentials_example.rake)
 5. Seed the marketplace_credentials by completing the task `rails marketplace_credentials_example:custom_seeds`
 
 ### Run Sidekiq
