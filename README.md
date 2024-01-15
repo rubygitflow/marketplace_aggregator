@@ -3,19 +3,18 @@ _An example of connecting to marketplaces and downloading data from them_
 
 [![Test&Lint](https://github.com/rubygitflow/marketplace_aggregator/actions/workflows/rubyonrails.yml/badge.svg)](https://github.com/rubygitflow/marketplace_aggregator/actions)
 
-An Example of working with the Yandex.Market marketplace API
+**This project demonstrates a way to connect to the Yandex.Market marketplace API with:**
+- Using UUIDs in tables with sensitive information instead of the usual numeric IDs;
+- Using PostgreSql native data types - Array, Enumerated, Hstore, Composite Types;
+- Setting up queues in Sidekiq;
+- Logging of critical events when interacting with the API of marketplace.
+- Code coverage with RSpec tests;
+- Enabling GitHub Actions;
 
-**The project demonstrates:**
+Particular emphasis is placed on separating business logic from the algorithmic solution.
 
-— Using UUIDs in tables with sensitive information instead of the usual numeric IDs;
-— Using PostgreSql native data types - Array, Enumerated, Hstore, Composite Types;
-— Setting up queues in Sidekiq;
-— Logging of critical events when interacting with the API of marketplace.
-— Code coverage with RSpec tests;
-— Enabling GitHub Actions;
-— Particular emphasis is placed on separating business logic from the algorithmic solution.
 
-* Install
+### Install
 1. Clone this app from GitHub
 2. Run `bundle i` from the app folder
 3. Install DB:
@@ -27,7 +26,7 @@ $ rails bd:seed
 4. Add the existing credentials from marketplaces to the [rake task](https://github.com/rubygitflow/mea_publisher/tree/master/lib/tasks/marketplace_credentials_example.rake)
 5. Seed the marketplace_credentials by completing the task `rails marketplace_credentials_example:custom_seeds`
 
-* Run Sidekiq
+### Run Sidekiq
 ```bash
 $ bundle exec sidekiq -C config/sidekiq_live.yml
 $ bundle exec sidekiq -C config/sidekiq_scheduled.yml
@@ -43,7 +42,7 @@ Look at the test coverage:
 $ open coverage/index.html
 ```
 
-* Import products from marketplaces
+### Import products from marketplaces
 Scheduled launch
 ```bash
 $ clockwork clock.rb
@@ -53,4 +52,4 @@ or cause immediately
 $ rails c
 irb(main):001> MarketplaceInteraction::ImportProductsJob.perform_now
 ```
-Review the changes in the database
+After that, review the changes in the database
