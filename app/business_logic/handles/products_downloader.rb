@@ -15,7 +15,7 @@ module Handles
 
     class << self
       def from_archive
-        ENV.fetch('PRODUCTS_DOWNLOADER_FROM_ARCHIVE') || false
+        ENV.fetch('PRODUCTS_DOWNLOADER_FROM_ARCHIVE', nil) || false
       end
 
       def take_card_status(offer)
