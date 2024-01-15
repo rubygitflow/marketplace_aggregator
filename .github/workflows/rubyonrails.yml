@@ -35,6 +35,7 @@ jobs:
 
     env:
       RAILS_ENV: test
+      YANDEX_APP_ID: 'f00bae19ad4a4c7d2190f4b1516ea277'
       DATABASE_URL: "postgres://rails:password@localhost:5432/rails_test"
     steps:
       - name: Checkout code
@@ -51,13 +52,6 @@ jobs:
       # Add or replace database setup steps here
       - name: Set up database schema
         run: bin/rails db:schema:load
-      # Add sidekiq setup steps here
-      # - name: Activate sidekiq process for live ActiveJobs
-      #   run: |
-      #     bundle exec sidekiq -C config/sidekiq_live.yml
-      - name: Activate sidekiq process for scheduled ActiveJobs
-        run: |
-          bundle exec sidekiq -C config/sidekiq_scheduled.yml
       # Add or replace test runners here
       - name: Run tests
         run: bin/rake
@@ -72,11 +66,6 @@ jobs:
         with:
           ruby-version: "3.2.2"
           bundler-cache: true
-      # Add or replace any other lints here
-      # - name: Security audit dependencies
-      #   run: bin/bundler-audit --update
-      # - name: Security audit application code
-      #   run: bin/brakeman -q -w2
       - name: Install Ruby Dependencies
         run: |
           gem install bundler
