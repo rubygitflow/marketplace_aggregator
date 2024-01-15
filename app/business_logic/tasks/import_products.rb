@@ -14,7 +14,7 @@ module BusinessLogic
           # 3. refresh the record
           mp_credential.save! if mp_credential.changed?
           # 4. cause direct data import
-          Products::ImportJob.perform_now(false, mp_credential.id) if mp_credential.is_valid
+          Products::ImportJob.perform_later(false, mp_credential.id) if mp_credential.is_valid
         end
       end
     end

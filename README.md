@@ -39,6 +39,6 @@ $ clockwork clock.rb
 or cause immediately
 ```bash
 $ rails c
-$ MarketplaceInteraction::ImportProductsJob.perform_now
+irb(main):001> MarketplaceInteraction::ImportProductsJob.perform_now
 ```
 Review the changes in the database

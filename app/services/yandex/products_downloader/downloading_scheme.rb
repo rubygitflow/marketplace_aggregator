@@ -53,7 +53,7 @@ module Yandex
           if page_token.blank?
             break
           else
-            page_tokens = { page_token: }
+            page_tokens = { page_token: page_token }
           end
         end
       end
