@@ -1,0 +1,87 @@
+{
+    "status": "OK",
+    "result":
+    {
+        "paging":
+        {
+            "nextPageToken": "111"
+        },
+        "offerMappings":
+        [
+            {
+                "offer":
+                {
+                    "offerId": "00040263",
+                    "name": "Ножницы садовые 300 мм серебряный/зеленый",
+                    "category": "Садовый инвентарь",
+                    "pictures":
+                    [
+                        "https://avatars.mds.yandex.net/get-marketpic/5405631/pic443ca2e2b29db94852ecc1d2832744db/orig",
+                        "https://avatars.mds.yandex.net/get-marketpic/4476862/picfc7d69d1084d3d33951700ef63722eff/orig"
+                    ],
+                    "vendor": "KNAUF",
+                    "barcodes":
+                    [
+                        "4277136502815"
+                    ],
+                    "description": "Ножницы садовые KNAUF подходят для первичной обработки поросли веток до 20 мм толщиной.",
+                    "manufacturerCountries":
+                    [],
+                    "weightDimensions":
+                    {
+                        "length": 30,
+                        "width": 16,
+                        "height": 3,
+                        "weight": 0.75
+                    },
+                    "basicPrice":
+                    {
+                        "value":3790.9000000,
+                        "currencyId":"RUR",
+                        "discountBase":6990.0000000,
+                        "updatedAt":"2023-12-18T19:03:06+03:00"
+                    },
+                    "downloadable": false,
+                    "adult": false,
+                    "cardStatus": "HAS_CARD_CAN_UPDATE",
+                    "campaigns":
+                    [
+                        {
+                            "campaignId": 22916389,
+                            "status": "PUBLISHED"
+                        }
+                    ],
+                    "sellingPrograms":
+                    [
+                        {
+                            "sellingProgram": "FBS",
+                            "status": "FINE"
+                        },
+                        {
+                            "sellingProgram": "EXPRESS",
+                            "status": "FINE"
+                        },
+                        {
+                            "sellingProgram": "DBS",
+                            "status": "FINE"
+                        },
+                        {
+                            "sellingProgram": "FBY",
+                            "status": "FINE"
+                        }
+                    ],
+                    "archived": false
+                },
+                "mapping":
+                {
+                    "marketSku": 100473183912,
+                    "marketSkuName": "Ножницы садовые KNAUF UMM 300 мм серебряный/зеленый",
+                    "marketModelId": 1755955930,
+                    "marketModelName": "KNAUF UMM",
+                    "marketCategoryId": 16229979,
+                    "marketCategoryName": "ножницы"
+                }
+            }
+        ]
+    }
+}

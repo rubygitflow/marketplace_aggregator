@@ -1,0 +1,76 @@
+{
+    "status": "OK",
+    "result":
+    {
+        "paging":
+        {
+        },
+        "offerMappings":
+        [
+            {
+                "offer":
+                {
+                    "offerId": "00040264",
+                    "name": "Ножницы садовые 400 мм серебряный/зеленый",
+                    "category": "Садовый инвентарь",
+                    "pictures":
+                    [],
+                    "vendor": "KNAUF",
+                    "barcodes":
+                    [
+                        "4277136502814"
+                    ],
+                    "description": "Ножницы садовые KNAUF подходят для первичной обработки поросли веток до 25 мм толщиной.",
+                    "manufacturerCountries":
+                    [],
+                    "weightDimensions":
+                    {
+                        "length": 40,
+                        "width": 16,
+                        "height": 3,
+                        "weight": 0.75
+                    },
+                    "downloadable": false,
+                    "adult": false,
+                    "cardStatus": "HAS_CARD_CAN_UPDATE",
+                    "campaigns":
+                    [
+                        {
+                            "campaignId": 22916389,
+                            "status": "NO_STOCKS"
+                        }
+                    ],
+                    "sellingPrograms":
+                    [
+                        {
+                            "sellingProgram": "FBS",
+                            "status": "FINE"
+                        },
+                        {
+                            "sellingProgram": "EXPRESS",
+                            "status": "FINE"
+                        },
+                        {
+                            "sellingProgram": "DBS",
+                            "status": "FINE"
+                        },
+                        {
+                            "sellingProgram": "FBY",
+                            "status": "FINE"
+                        }
+                    ],
+                    "archived": true
+                },
+                "mapping":
+                {
+                    "marketSku": 100473183914,
+                    "marketSkuName": "Ножницы садовые KNAUF UMM 400 мм серебряный/зеленый",
+                    "marketModelId": 1755955934,
+                    "marketModelName": "KNAUF UMM",
+                    "marketCategoryId": 16229979,
+                    "marketCategoryName": "ножницы"
+                }
+            }
+        ]
+    }
+}

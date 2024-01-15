@@ -19,6 +19,8 @@
 require 'factory_bot'
 require 'webmock/rspec'
 
+WebMock.allow_net_connect!(net_http_connect_on_start: true)
+
 Dir[File.expand_path './spec/helpers/*.rb'].each { |f| require_relative(f) }
 
 RSpec.configure do |config|

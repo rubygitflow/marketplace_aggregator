@@ -8,10 +8,11 @@ require 'spec_helper'
 require 'faker'
 require 'support/factory_bot'
 
-# require 'sidekiq/testing'
-# Sidekiq::Testing.fake!
+require 'sidekiq/testing'
+Sidekiq::Testing.fake!
 
 ENV['RAILS_ENV'] ||= 'test'
+
 require_relative '../config/environment'
 # Prevent database truncation if the environment is production
 abort("The Rails environment is running in production mode!") if Rails.env.production?
@@ -49,8 +50,6 @@ RSpec.configure do |config|
   config.fixture_paths = [
     Rails.root.join('spec/fixtures')
   ]
-  # config.include ApiHelpers, type: :request
-  # config.include ModelHelpers, type: :service
 
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false

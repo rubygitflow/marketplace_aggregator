@@ -8,7 +8,7 @@
 /.bundle
 
 # Ignore all environment files (except templates).
-/.env*
+/.env
 !/.env*.erb
 
 # Ignore all logfiles and tempfiles.
@@ -35,3 +35,5 @@
 # Ignore secret seeds
 /lib/tasks/marketplace_credentials.rake
 
+# Ignore simplecov stat
+/coverage/*

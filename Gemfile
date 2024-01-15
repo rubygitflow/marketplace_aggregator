@@ -14,18 +14,28 @@ gem 'pg', '~> 1.5'
 gem 'puma', '~> 6.4'
 
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
-# gem "kredis"
+gem 'kredis', '~> 1.7'
 
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 # gem "bcrypt", "~> 3.1.7"
 
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin Ajax possible
-# gem "rack-cors"
+# https://github.com/cyu/rack-cors
+# config/initializers/cors.rb
+# gem "rack-cors", '~> 2.0', '>= 2.0.1'
+
+gem 'sidekiq', '~> 7.2'
+
+gem 'clockwork', '~> 3.0', '>= 3.0.2'
+
+gem 'faraday', '~> 2.9'
+gem 'faraday-retry', '~> 2.2'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'database_cleaner-active_record', '~> 2.1'
+  gem 'dotenv-rails', '~> 2.8', '>= 2.8.1'
   gem 'factory_bot_rails', '~> 6.4'
   gem 'faker', '~> 3.2'
   gem 'rspec-rails', '~> 6.1'

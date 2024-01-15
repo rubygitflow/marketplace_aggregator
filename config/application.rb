@@ -20,7 +20,10 @@ require 'action_view/railtie'
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
-module MarketplaceAggr
+# Load dotenv only in development or test environment
+Dotenv::Railtie.load if %w[development test].include? ENV['RAILS_ENV']
+
+module MarketplaceAggregator
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.1
@@ -44,5 +47,16 @@ module MarketplaceAggr
     config.api_only = true
 
     config.active_record.schema_format = :sql
+
+    config.active_job.queue_adapter = :sidekiq
+
+    # https://guides.rubyonrails.org/api_app.html#using-session-middlewares
+    # This also configures session_options for use below
+    config.session_store :cookie_store, key: SecureRandom.hex(32)
+
+    # Required for all session management (regardless of session_store)
+    config.middleware.use ActionDispatch::Cookies
+
+    config.middleware.use config.session_store, config.session_options
   end
 end

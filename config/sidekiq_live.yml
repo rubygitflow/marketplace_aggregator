@@ -1,0 +1,9 @@
+# the Most important for clients
+
+:timeout: 10
+:concurrency: <%= ENV.fetch("SIDEKIQ_CONCURRENCY") { 10 } %>
+:max_retries: 0
+:queues:
+  - [client_grabber_products, 3]
+  - [client_grabber_orders, 2]
+  - [client_grabber_transactions, 1]

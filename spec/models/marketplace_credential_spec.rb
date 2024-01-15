@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe MarketplaceCredential, type: :model do
   describe 'scopes' do
     let!(:marketplace_credential) { create(:marketplace_credential, is_valid: true) }
-    let!(:marketplace_credential_not_authentic) { create(:marketplace_credential, :not_authentic) }
+    let!(:marketplace_credential_not_authentic) { create(:marketplace_credential, :not_authentic_on_yandex) }
     let!(:marketplace_credential_not_valid) { create(:marketplace_credential, is_valid: false) }
 
     it 'is authentic' do
