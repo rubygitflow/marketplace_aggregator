@@ -23,7 +23,7 @@ RSpec.describe Yandex::Api::OfferMappings, type: :service do
             'x-ratelimit-resource-remaining' => '600',
             'x-ratelimit-resource-until' => 'Tue, 09 Jan 2024 14:05:00 GMT'
           },
-          load_json('import/yandex_info_1', symbolize: true).to_json
+          load_json('import/yandex_info_1')
         ]
       end
 

@@ -9,10 +9,12 @@ module Yandex
       @connection = Connection.start
       @marketplace_credential = mp_credential
       @token = mp_credential&.credentials&.[]('token')
+      @raise_an_error = false
     end
 
-    def call(method:, params: {}, body: {})
+    def call(method:, raise_an_error: false, params: {}, body: {})
       # Let's define an HTTP method for a specific endpoint
+      @raise_an_error = raise_an_error
       send(method, params, body)
     end
 
@@ -53,7 +55,27 @@ module Yandex
     def api_call
       response = yield
       body = JSON.parse response.body, symbolize_names: true
+      if @raise_an_error && response.status >= 400
+        raise_error(
+          response.status,
+          body[:errors]&.first&.[](:message),
+          @marketplace_credential&.id
+        )
+      end
+
       [response.status, response.headers, body]
+    end
+
+    def raise_error(status, message, mp_credential_id)
+      if status == 420
+        raise MarketplaceAggregator::ApiLimitError.new(status, message, mp_credential_id)
+      elsif [401, 403].include?(status)
+        raise MarketplaceAggregator::ApiAccessDeniedError.new(status, message, mp_credential_id)
+      elsif (400...500).include?(status)
+        raise MarketplaceAggregator::ApiBadRequestError.new(status, message, mp_credential_id)
+      else # status >= 500
+        raise MarketplaceAggregator::ApiError.new(status, message, mp_credential_id)
+      end
     end
   end
 end

@@ -28,7 +28,10 @@ module Yandex
       when 'HTTP/1.1 403 Forbidden'
         # find out details from body of POST request
         status, _, body = Yandex::Api::OfferMappings.new(mp_credential)
-                                                    .call(params: { limit: 1 })
+                                                    .call(
+                                                      raise_an_error: false,
+                                                      params: { limit: 1 }
+                                                    )
 
         if status < 400
           { ok: true }

@@ -22,6 +22,7 @@ module Products
 
     private
 
+    # rubocop:disable Metrics/AbcSize
     def downloadable?
       downloader = @mp_credential.marketplace.to_constant_with(DOWNLOADER_CLASS)
       downloader.new(@mp_credential).call
@@ -29,6 +30,24 @@ module Products
       Rails.logger.error "#{e.class}: #{e.message}"
       Rails.logger.error e.backtrace[1, 5].join("\n")
       false
+      # checking the code - fixable
+    rescue MarketplaceAggregator::ApiAccessDeniedError => e
+      Rails.logger.error "#{e.class}; #{e.message}"
+      # that's all
+      false
+    rescue MarketplaceAggregator::ApiBadRequestError => e
+      Rails.logger.error "#{e.class}; #{e.message}"
+      # that's all
+      false
+    rescue MarketplaceAggregator::ApiLimitError => e
+      Rails.logger.error "#{e.class}; #{e.message}"
+      # restart the task taking into account restrictions on limits
+      false
+    rescue MarketplaceAggregator::ApiError => e
+      Rails.logger.error "#{e.class}; #{e.message}"
+      # restart task after an hour (for example)
+      false
     end
+    # rubocop:enable Metrics/AbcSize
   end
 end

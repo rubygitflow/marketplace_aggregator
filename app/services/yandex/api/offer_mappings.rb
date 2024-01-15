@@ -14,7 +14,7 @@ module Yandex
         "#{URL}/businesses/#{@business_id}/offer-mappings.json"
       end
 
-      def call(method: :post, params: {}, body: {})
+      def call(method: :post, raise_an_error: true, params: {}, body: {})
         super
       end
     end

@@ -4,35 +4,32 @@
 
 module Yandex
   class ProductsDownloader
-    PAGE_LIMIT = 200
+    include Yandex::ProductsDownloader::DownloadingScheme
 
-    attr_reader :mp_credential, :http_client, :parsed_ids, :page_token
+    attr_reader :mp_credential, :http_client, :parsed_ids
 
     def initialize(mp_credential)
       @mp_credential = mp_credential
       @http_client = Yandex::Api::OfferMappings.new(mp_credential)
-      @page_token = nil
       @parsed_ids = []
     end
 
     def call
       return false if mp_credential.credentials.nil?
 
-      call_market_api
-      mark_deleted_products!
+      download_products
+      tag_lost_products!
       true
     end
 
     private
 
-    def call_market_api; end
-
-    def mark_deleted_products!
+    def tag_lost_products!
       products = Product.where(marketplace_credential_id: mp_credential.id)
-      offer_ids = products.pluck(:offer_id) - parsed_ids
+      lost_offer_ids = products.pluck(:offer_id) - parsed_ids
 
       products.where(
-        offer_id: offer_ids
+        offer_id: lost_offer_ids
       ).update_all(scrub_status: 'gone')
     end
   end

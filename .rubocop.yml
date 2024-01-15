@@ -25,6 +25,10 @@ RSpec/NestedGroups:
 RSpec/NamedSubject:
   Enabled: false
 
+RSpec/MessageSpies:
+  Exclude:
+    - spec/jobs/products/import_job_spec.rb
+  
 AllCops:
   Exclude:
     - bin/**/*
@@ -150,3 +154,8 @@ Style/OptionalBooleanParameter:
 
 Style/StringConcatenation:
   Enabled: false
+
+Layout/LineLength:
+  Exclude:
+    - spec/shared/**/*
+    - spec/business_logic/tasks/import_products_spec.rb
