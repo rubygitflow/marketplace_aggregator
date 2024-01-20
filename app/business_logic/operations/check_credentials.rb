@@ -29,8 +29,8 @@ module Operations
       # 4. Notify client if needed
       notify_client unless @result_valid[:ok]
     rescue StandardError => e
-      Rails.logger.error "#{e.class}: #{e.message}"
-      Rails.logger.error e.backtrace[1, 5].join("\n")
+      ErrorLogger.push e
+      ErrorLogger.push_trace e
       @result_valid = { errors: e.message }
     end
 

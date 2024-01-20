@@ -75,7 +75,9 @@ RSpec.describe Products::ImportJob, type: :job do
       ActiveJob::Base.queue_adapter = :test
 
       it 'fishes out code 400' do
-        expect(Rails.logger).to receive(:error).with(/MarketplaceAggregator::ApiBadRequestError;/)
+        expect(Rails.logger).to(
+          receive(:error).with(/MarketplaceAggregator::ApiBadRequestError/).once
+        )
         described_class.perform_now(false, marketplace_credential.id)
       end
     end
@@ -86,7 +88,9 @@ RSpec.describe Products::ImportJob, type: :job do
       ActiveJob::Base.queue_adapter = :test
 
       it 'fishes out code 403' do
-        expect(Rails.logger).to receive(:error).with(/MarketplaceAggregator::ApiAccessDeniedError;/)
+        expect(Rails.logger).to(
+          receive(:error).with(/MarketplaceAggregator::ApiAccessDeniedError/).once
+        )
         described_class.perform_now(false, marketplace_credential.id)
       end
     end
@@ -97,8 +101,28 @@ RSpec.describe Products::ImportJob, type: :job do
       ActiveJob::Base.queue_adapter = :test
 
       it 'fishes out code 420' do
-        expect(Rails.logger).to receive(:error).with(/MarketplaceAggregator::ApiLimitError;/)
+        expect(Rails.logger).to(
+          receive(:error).with(/MarketplaceAggregator::ApiLimitError/).once
+        )
         described_class.perform_now(false, marketplace_credential.id)
+      end
+
+      context 'when is the ReimportProducts called for the first time' do
+        it 'changes limiter marketplace_credential.reimport' do
+          described_class.perform_now(false, marketplace_credential.id)
+          expect(marketplace_credential.reimport_products.value).to eq(1)
+        end
+      end
+
+      context 'when is marketplace_credential.reimport_products exceeded' do
+        it 'fishes out ' do
+          3.times { marketplace_credential.reimport_products.poke }
+          expect(marketplace_credential.reimport_products.value).to eq(3)
+          expect(Rails.logger).to(
+            receive(:error).with(/Try restart Tasks::ReimportProducts after an hour/).once
+          )
+          described_class.perform_now(false, marketplace_credential.id)
+        end
       end
     end
 
@@ -108,7 +132,9 @@ RSpec.describe Products::ImportJob, type: :job do
       ActiveJob::Base.queue_adapter = :test
 
       it 'fishes out code 500' do
-        expect(Rails.logger).to receive(:error).with(/MarketplaceAggregator::ApiError;/)
+        expect(Rails.logger).to(
+          receive(:error).with(/MarketplaceAggregator::ApiError/).once
+        )
         described_class.perform_now(false, marketplace_credential.id)
       end
     end

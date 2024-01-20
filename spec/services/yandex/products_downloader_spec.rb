@@ -23,7 +23,7 @@ RSpec.describe Yandex::ProductsDownloader, type: :service do
       expect(product.barcodes).to eq ['4277136502815']
       expect(product.skus).to eq ['100473183912']
       expect(product.scrub_status).to eq 'success'
-      expect(product.schemes).to eq %w[FBS EXPRESS DBS FBY]
+      expect(product.schemes).to eq %w[DBS EXPRESS FBS FBY]
       expect(product.stock).to eq nil
       expect(product.product_id).to eq '1755955930'
     end

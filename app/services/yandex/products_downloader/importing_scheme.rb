@@ -14,10 +14,13 @@ module Yandex
             offer_id:
           )
           prepare_product(item)
+          # We can record the changes somewhere.
+          # pp("@product.changes=",@product.changes) if @product.changed?
           @product.save! if @product.changed?
         end
       end
 
+      # rubocop:disable Metrics/MethodLength
       # rubocop:disable Metrics/AbcSize
       # rubocop:disable Metrics/CyclomaticComplexity
       # rubocop:disable Metrics/PerceivedComplexity
@@ -25,15 +28,16 @@ module Yandex
         offer = item[:offer]
         @product.name = offer.fetch(:name, '')
         @product.barcodes = offer.fetch(:barcodes, [])
-        @product.price = "(#{offer.dig(:basicPrice, :value) || 0},#{offer.dig(:basicPrice, :currencyId) || 'RUR'})"
+        @product.price = "(#{offer.dig(:basicPrice, :value) || 0},#{offer.dig(:basicPrice, :currencyId) || 'RUR'})".sub(
+          '.0,', ','
+        )
         @product.status = (@archive ? 'archived' : nil) ||
                           Handles::ProductsDownloader.take_card_status(offer)
         @product.schemes = offer.fetch(:sellingPrograms, []).filter_map do |elem|
           elem[:sellingProgram] if elem[:status] == 'FINE'
-        end
+        end.sort
         @product.images = offer.fetch(:pictures, [])
         @product.name = offer.fetch(:name, '')
-
         @product.description = offer.fetch(:description, nil)
 
         mapping = item[:mapping]
@@ -48,6 +52,7 @@ module Yandex
       # rubocop:enable Metrics/PerceivedComplexity
       # rubocop:enable Metrics/CyclomaticComplexity
       # rubocop:enable Metrics/AbcSize
+      # rubocop:enable Metrics/MethodLength
 
       private :import_payload, :prepare_product
     end

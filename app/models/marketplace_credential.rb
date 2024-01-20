@@ -5,6 +5,10 @@ class MarketplaceCredential < ApplicationRecord
   belongs_to :client
   has_many :products, dependent: :destroy
 
+  # we'll limit the number of downloads with an error 420:
+  # "Hit rate limit of 'N' parallel requests"
+  kredis_limiter :reimport_products, limit: 3, expires_in: 1.hour
+
   delegate :name,  to: :marketplace
   delegate :logo,  to: :marketplace
   delegate :label, to: :marketplace
