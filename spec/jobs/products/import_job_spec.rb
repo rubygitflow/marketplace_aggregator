@@ -107,15 +107,15 @@ RSpec.describe Products::ImportJob, type: :job do
         described_class.perform_now(false, marketplace_credential.id)
       end
 
-      context 'when is the ReimportProducts called for the first time' do
+      context 'when the ReimportProducts is called for the first time' do
         it 'changes limiter marketplace_credential.reimport' do
           described_class.perform_now(false, marketplace_credential.id)
           expect(marketplace_credential.reimport_products.value).to eq(1)
         end
       end
 
-      context 'when is marketplace_credential.reimport_products exceeded' do
-        it 'fishes out ' do
+      context 'when marketplace_credential.reimport_products is exceeded' do
+        it 'enters an additional message into the log' do
           3.times { marketplace_credential.reimport_products.poke }
           expect(marketplace_credential.reimport_products.value).to eq(3)
           expect(Rails.logger).to(
