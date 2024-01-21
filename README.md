@@ -7,7 +7,7 @@ _An example of connecting to marketplaces and downloading data from them_
 - Using UUIDs in tables with personalized information instead of the usual numeric IDs;
 - Using PostgreSql native data types - Array, Enumerated, Hstore, Composite Types;
 - Setting up queues in Sidekiq;
-- Pre-processing of the rate limit errors based on response headers from the marketplace and Post-processing based on restrictions in Kredis;
+- Pre-processing the Rate Limits based on marketplace response headers and Post-processing based on restrictions stored in Kredis;
 - Logging of critical events when interacting with the API of marketplace.
 - Code coverage with RSpec tests;
 - Enabling GitHub Actions;
