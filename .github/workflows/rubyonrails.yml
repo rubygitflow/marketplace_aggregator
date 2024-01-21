@@ -38,6 +38,7 @@ jobs:
       YANDEX_APP_ID: 'f00bae19ad4a4c7d2190f4b1516ea277'
       DATABASE_URL: "postgres://rails:password@localhost:5432/rails_test"
       PRODUCTS_DOWNLOADER_FROM_ARCHIVE: true
+      LIMITING_REMAINING_REQUESTS: 5
     steps:
       - name: Checkout code
         uses: actions/checkout@v4

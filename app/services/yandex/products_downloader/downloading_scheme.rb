@@ -42,7 +42,7 @@ module Yandex
 
             import_payload(items)
           else # any other status anyway
-            raise ApiError.new(status, 'something went wrong', mp_credential.id)
+            raise MarketplaceAggregator::ApiError.new(status, 'something went wrong', mp_credential.id)
           end
 
           # rubocop:disable Lint/RedundantSplatExpansion

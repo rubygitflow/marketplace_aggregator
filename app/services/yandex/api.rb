@@ -54,7 +54,12 @@ module Yandex
 
     def api_call
       response = yield
-      body = JSON.parse response.body, symbolize_names: true
+      body = begin
+        JSON.parse response.body, symbolize_names: true
+      rescue JSON::ParserError => e
+        ErrorLogger.push e
+        {}
+      end
       if @raise_an_error && response.status >= 400
         raise_error(
           response.status,
@@ -73,7 +78,7 @@ module Yandex
         raise MarketplaceAggregator::ApiAccessDeniedError.new(status, message, mp_credential_id)
       elsif (400...500).include?(status)
         raise MarketplaceAggregator::ApiBadRequestError.new(status, message, mp_credential_id)
-      else # status >= 500
+      elsif status >= 500
         raise MarketplaceAggregator::ApiError.new(status, message, mp_credential_id)
       end
     end

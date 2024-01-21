@@ -29,7 +29,6 @@ module Operations
       # 4. Notify client if needed
       notify_client unless @result_valid[:ok]
     rescue StandardError => e
-      ErrorLogger.push e
       ErrorLogger.push_trace e
       @result_valid = { errors: e.message }
     end

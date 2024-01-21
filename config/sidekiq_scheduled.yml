@@ -4,6 +4,6 @@
 :concurrency: <%= ENV.fetch("SIDEKIQ_CONCURRENCY") { 10 } %>
 :max_retries: 0
 :queues:
-  - [marketplace_grabber_products, 1]
-  - [marketplace_grabber_orders, 1]
-  - [marketplace_grabber_transactions, 1]
+  - [marketplace_grabber_products, 3]
+  - [marketplace_grabber_orders, 3]
+  - [marketplace_grabber_transactions, 3]

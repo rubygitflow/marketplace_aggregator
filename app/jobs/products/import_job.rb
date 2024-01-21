@@ -28,7 +28,6 @@ module Products
       downloader.new(@mp_credential).call
     rescue NameError => e
       # We are checking the code. It's fixable
-      ErrorLogger.push e
       ErrorLogger.push_trace e
       false
     rescue MarketplaceAggregator::ApiAccessDeniedError => e

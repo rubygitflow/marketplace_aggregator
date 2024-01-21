@@ -3,14 +3,14 @@
 require 'rails_helper'
 
 RSpec.describe Yandex::ProductsDownloader, type: :service do
-  describe 'Download products' do
+  describe 'successful downloading of products' do
     include_context 'with marketplace_credential yandex offer-mappings'
 
     before do
       described_class.new(marketplace_credential).call
     end
 
-    it 'gains new records of products on the marketplace' do
+    it 'gains new records about the products on the marketplace' do
       expect(Product.count).to eq 2
     end
 
@@ -28,5 +28,34 @@ RSpec.describe Yandex::ProductsDownloader, type: :service do
       expect(product.product_id).to eq '1755955930'
     end
     # rubocop:enable RSpec/MultipleExpectations
+  end
+
+  describe 'Unsuccessful downloading of products' do
+    context 'with failed 500' do
+      include_context 'when marketplace_credential yandex offer-mappings 500 stub'
+
+      it 'rejects data upload with an error' do
+        expect { described_class.new(marketplace_credential).call }
+          .to raise_error(MarketplaceAggregator::ApiError)
+      end
+    end
+
+    context 'with failed 503' do
+      include_context 'when marketplace_credential yandex offer-mappings 503 stub'
+
+      it 'rejects data upload with an error' do
+        expect { described_class.new(marketplace_credential).call }
+          .to raise_error(MarketplaceAggregator::ApiError)
+      end
+    end
+
+    context 'with failed 204' do
+      include_context 'when marketplace_credential yandex offer-mappings 204 stub'
+
+      it 'checks the empty body in the response' do
+        expect { described_class.new(marketplace_credential).call }
+          .to raise_error(MarketplaceAggregator::ApiError)
+      end
+    end
   end
 end

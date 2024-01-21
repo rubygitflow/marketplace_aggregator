@@ -1,0 +1,10 @@
+{
+    "errors":
+    [
+        {
+            "code": "SERVICE_UNAVAILABLE",
+            "message": "Service Unavailable"
+        }
+    ],
+    "status": "ERROR"
+}

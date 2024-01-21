@@ -26,8 +26,7 @@ RSpec/NamedSubject:
   Enabled: false
 
 RSpec/MessageSpies:
-  Exclude:
-    - spec/jobs/products/import_job_spec.rb
+  Enabled: false
   
 AllCops:
   Exclude:

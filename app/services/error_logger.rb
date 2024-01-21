@@ -8,8 +8,13 @@ class ErrorLogger
       Rails.logger.error msg
     end
 
-    def push_trace(e)
+    def trace(e)
       Rails.logger.error e.backtrace[1, 5].join("\n")
+    end
+
+    def push_trace(e)
+      push(e)
+      trace(e)
     end
   end
 end
