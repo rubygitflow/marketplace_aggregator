@@ -1,12 +1,13 @@
 # frozen_string_literal: true
 
-module Yandex
+module Ozon
   class Api < BaseApi
-    URL = 'https://api.partner.market.yandex.ru'
+    URL = 'https://api-seller.ozon.ru'
 
     def initialize(mp_credential, options = {})
       super
-      @token = mp_credential&.credentials&.[]('token')
+      @api_key = mp_credential&.credentials&.[]('api_key')
+      @client_id = mp_credential&.credentials&.[]('client_id')
     end
 
     private
@@ -14,7 +15,9 @@ module Yandex
     def headers
       super.merge(
         {
-          'Authorization' => "OAuth oauth_token=\"#{@token}\", oauth_client_id=\"#{ENV.fetch('YANDEX_APP_ID')}\""
+          'Api-Key' => @api_key,
+          'Client-Id' => @client_id,
+          'x-o3-app-name' => ENV.fetch('OZON_APP_ID')
         }
       )
     end
@@ -22,7 +25,7 @@ module Yandex
     def error_message(body)
       case response_content_type
       when :json
-        body[:errors]&.first&.[](:message)
+        "code: #{body[:code]}; #{body[:message]}"
       when :html
         body
       else

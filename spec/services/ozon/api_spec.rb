@@ -2,8 +2,8 @@
 
 require 'rails_helper'
 
-RSpec.describe Yandex::Api, type: :service do
-  let!(:marketplace_credential) { create(:marketplace_credential, :yandex) }
+RSpec.describe Ozon::Api, type: :service do
+  let!(:marketplace_credential) { create(:marketplace_credential, :ozon) }
   let(:stubs)  { Faraday::Adapter::Test::Stubs.new }
   let(:conn)   { Faraday.new { |b| b.adapter(:test, stubs) } }
   let(:client) { described_class.new(marketplace_credential) }
@@ -16,14 +16,14 @@ RSpec.describe Yandex::Api, type: :service do
         expect(env.url.path).to eq('/')
         [
           200,
-          { 'Content-Type': 'application/json' },
+          { 'content-type': 'application/json' },
           '{"origin": "127.0.0.1"}'
         ]
       end
 
       status, headers, body = client.call(method: :get)
       expect(status).to eq(200)
-      expect(headers['Content-Type']).to eq('application/json')
+      expect(headers['content-type']).to eq('application/json')
       expect(body[:origin]).to eq('127.0.0.1')
       stubs.verify_stubbed_calls
     end
@@ -34,14 +34,14 @@ RSpec.describe Yandex::Api, type: :service do
           expect(env.url.path).to eq('/')
           [
             200,
-            { 'Vary': 'Origin' },
+            { 'server': 'nginx' },
             '{"origin": "127.0.0.1"}'
           ]
         end
 
         status, headers, body = client.call(method: :get)
         expect(status).to eq(200)
-        expect(headers['Vary']).to eq('Origin')
+        expect(headers['server']).to eq('nginx')
         expect(body.class.name).to eq('String')
         stubs.verify_stubbed_calls
       end
@@ -53,7 +53,7 @@ RSpec.describe Yandex::Api, type: :service do
           expect(env.url.path).to eq('/')
           [
             200,
-            { 'Content-Type': 'text/html' },
+            { 'content-type': 'text/html' },
             <<~HTML
               <html>
               <head><title>502 Bad Gateway</title></head>
@@ -68,7 +68,7 @@ RSpec.describe Yandex::Api, type: :service do
 
         status, headers, body = client.call(method: :get)
         expect(status).to eq(200)
-        expect(headers['Content-Type']).to eq('text/html')
+        expect(headers['content-type']).to eq('text/html')
         expect(body).to include('502 Bad Gateway')
         stubs.verify_stubbed_calls
       end
@@ -81,7 +81,7 @@ RSpec.describe Yandex::Api, type: :service do
         expect(env.url.path).to eq('/')
         [
           200,
-          { 'Content-Type': 'application/json' },
+          { 'content-type': 'application/json' },
           '{"origin": "127.0.0.1"}'
         ]
       end
@@ -92,7 +92,7 @@ RSpec.describe Yandex::Api, type: :service do
         body: { id: 4321 }
       )
       expect(status).to eq(200)
-      expect(headers['Content-Type']).to eq('application/json')
+      expect(headers['content-type']).to eq('application/json')
       expect(body[:origin]).to eq('127.0.0.1')
       stubs.verify_stubbed_calls
     end
@@ -103,7 +103,7 @@ RSpec.describe Yandex::Api, type: :service do
           expect(env.url.path).to eq('/')
           [
             200,
-            { 'Vary': 'Origin' },
+            { 'server': 'nginx' },
             '{"origin": "127.0.0.1"}'
           ]
         end
@@ -114,7 +114,7 @@ RSpec.describe Yandex::Api, type: :service do
           body: { id: 4321 }
         )
         expect(status).to eq(200)
-        expect(headers['Vary']).to eq('Origin')
+        expect(headers['server']).to eq('nginx')
         expect(body.class.name).to eq('String')
         stubs.verify_stubbed_calls
       end
@@ -126,7 +126,7 @@ RSpec.describe Yandex::Api, type: :service do
           expect(env.url.path).to eq('/')
           [
             200,
-            { 'Content-Type': 'text/html' },
+            { 'content-type': 'text/html' },
             <<~HTML
               <html>
               <head><title>502 Bad Gateway</title></head>
@@ -145,7 +145,7 @@ RSpec.describe Yandex::Api, type: :service do
           body: { id: 4321 }
         )
         expect(status).to eq(200)
-        expect(headers['Content-Type']).to eq('text/html')
+        expect(headers['content-type']).to eq('text/html')
         expect(body).to include('502 Bad Gateway')
         stubs.verify_stubbed_calls
       end
@@ -159,8 +159,8 @@ RSpec.describe Yandex::Api, type: :service do
           expect(env.url.path).to eq('/')
           [
             500,
-            { 'Content-Type': 'application/json' },
-            '{"errors": []}'
+            { 'content-type': 'application/json' },
+            '{"code": 2, "message": "details"}'
           ]
         end
 
@@ -171,8 +171,8 @@ RSpec.describe Yandex::Api, type: :service do
           body: { id: 4321 }
         )
         expect(status).to eq(500)
-        expect(headers['Content-Type']).to eq('application/json')
-        expect(body[:errors]).to eq([])
+        expect(headers['content-type']).to eq('application/json')
+        expect(body[:message]).to eq('details')
         stubs.verify_stubbed_calls
       end
 
@@ -181,8 +181,8 @@ RSpec.describe Yandex::Api, type: :service do
           expect(env.url.path).to eq('/')
           [
             500,
-            { 'Content-Type': 'application/json' },
-            '{"errors": []}'
+            { 'content-type': 'application/json' },
+            '{"code": 2, "message": "details"}'
           ]
         end
 
@@ -204,8 +204,8 @@ RSpec.describe Yandex::Api, type: :service do
           expect(env.url.path).to eq('/')
           [
             400,
-            { 'Content-Type': 'application/json' },
-            '{"errors": []}'
+            { 'content-type': 'application/json' },
+            '{"code": 2, "message": "details"}'
           ]
         end
 
@@ -216,8 +216,8 @@ RSpec.describe Yandex::Api, type: :service do
           body: { id: 4321 }
         )
         expect(status).to eq(400)
-        expect(headers['Content-Type']).to eq('application/json')
-        expect(body[:errors]).to eq([])
+        expect(headers['content-type']).to eq('application/json')
+        expect(body[:message]).to eq('details')
         stubs.verify_stubbed_calls
       end
 
@@ -226,8 +226,8 @@ RSpec.describe Yandex::Api, type: :service do
           expect(env.url.path).to eq('/')
           [
             400,
-            { 'Content-Type': 'application/json' },
-            '{"errors": []}'
+            { 'content-type': 'application/json' },
+            '{"code": 2, "message": "details"}'
           ]
         end
 
@@ -249,8 +249,8 @@ RSpec.describe Yandex::Api, type: :service do
           expect(env.url.path).to eq('/')
           [
             401,
-            { 'Content-Type': 'application/json' },
-            '{"errors": []}'
+            { 'content-type': 'application/json' },
+            '{"code": 2, "message": "details"}'
           ]
         end
 
@@ -261,8 +261,8 @@ RSpec.describe Yandex::Api, type: :service do
           body: { id: 4321 }
         )
         expect(status).to eq(401)
-        expect(headers['Content-Type']).to eq('application/json')
-        expect(body[:errors]).to eq([])
+        expect(headers['content-type']).to eq('application/json')
+        expect(body[:message]).to eq('details')
         stubs.verify_stubbed_calls
       end
 
@@ -271,8 +271,8 @@ RSpec.describe Yandex::Api, type: :service do
           expect(env.url.path).to eq('/')
           [
             401,
-            { 'Content-Type': 'application/json' },
-            '{"errors": []}'
+            { 'content-type': 'application/json' },
+            '{"code": 2, "message": "details"}'
           ]
         end
 
@@ -294,8 +294,8 @@ RSpec.describe Yandex::Api, type: :service do
           expect(env.url.path).to eq('/')
           [
             420,
-            { 'Content-Type': 'application/json' },
-            '{"errors": []}'
+            { 'content-type': 'application/json' },
+            '{"code": 2, "message": "details"}'
           ]
         end
 
@@ -306,8 +306,8 @@ RSpec.describe Yandex::Api, type: :service do
           body: { id: 4321 }
         )
         expect(status).to eq(420)
-        expect(headers['Content-Type']).to eq('application/json')
-        expect(body[:errors]).to eq([])
+        expect(headers['content-type']).to eq('application/json')
+        expect(body[:message]).to eq('details')
         stubs.verify_stubbed_calls
       end
 
@@ -316,8 +316,8 @@ RSpec.describe Yandex::Api, type: :service do
           expect(env.url.path).to eq('/')
           [
             420,
-            { 'Content-Type': 'application/json' },
-            '{"errors": []}'
+            { 'content-type': 'application/json' },
+            '{"code": 2, "message": "details"}'
           ]
         end
 

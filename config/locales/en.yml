@@ -31,3 +31,4 @@ en:
   errors:
     try_restart_after_an_hour: "Try restart %{task_name} after an hour"
     duration_of_rate_limit_has_been_changed: "%{marketplace_name}: The duration of the RateLimit has been changed"
+    marketplace_has_not_been_selected: 'Marketplace has not been selected'
