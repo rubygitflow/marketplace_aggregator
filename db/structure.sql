@@ -204,6 +204,42 @@ ALTER SEQUENCE public.marketplaces_id_seq OWNED BY public.marketplaces.id;
 
 
 --
+-- Name: ozon_categories; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.ozon_categories (
+    id bigint NOT NULL,
+    category_name character varying,
+    description_category_id integer,
+    category_disabled boolean DEFAULT false,
+    type_name character varying,
+    type_id integer,
+    type_disabled boolean DEFAULT false,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: ozon_categories_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.ozon_categories_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: ozon_categories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.ozon_categories_id_seq OWNED BY public.ozon_categories.id;
+
+
+--
 -- Name: products; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -292,6 +328,13 @@ ALTER TABLE ONLY public.marketplaces ALTER COLUMN id SET DEFAULT nextval('public
 
 
 --
+-- Name: ozon_categories id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ozon_categories ALTER COLUMN id SET DEFAULT nextval('public.ozon_categories_id_seq'::regclass);
+
+
+--
 -- Name: products id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -331,6 +374,14 @@ ALTER TABLE ONLY public.marketplaces
 
 
 --
+-- Name: ozon_categories ozon_categories_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ozon_categories
+    ADD CONSTRAINT ozon_categories_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: products products_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -358,6 +409,13 @@ CREATE INDEX index_marketplace_credentials_on_client_id ON public.marketplace_cr
 --
 
 CREATE INDEX index_marketplace_credentials_on_marketplace_id ON public.marketplace_credentials USING btree (marketplace_id);
+
+
+--
+-- Name: index_ozon_categories_on_description_category_id_and_type_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_ozon_categories_on_description_category_id_and_type_id ON public.ozon_categories USING btree (description_category_id, type_id);
 
 
 --
@@ -426,6 +484,7 @@ ALTER TABLE ONLY public.marketplace_credentials
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240126144101'),
 ('20240106161532'),
 ('20240106161520'),
 ('20240106161507'),

@@ -19,6 +19,14 @@ RSpec.describe MarketplaceCredential, type: :model do
     it 'is invalid' do
       expect(described_class.invalid.length).to eq(2)
     end
+
+    it 'has ozon' do
+      expect(described_class.ozon.length).to eq(2)
+    end
+
+    it 'has yandex' do
+      expect(described_class.yandex.length).to eq(1)
+    end
   end
 
   describe 'associations' do

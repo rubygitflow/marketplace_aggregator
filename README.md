@@ -27,6 +27,7 @@ $ rails bd:seed
 ```
 4. Add the existing credentials from marketplaces to the [rake task](https://github.com/rubygitflow/marketplace_aggregator/tree/master/lib/tasks/marketplace_credentials_example.rake)
 5. Seed the marketplace_credentials by completing the task `rails marketplace_credentials_example:custom_seeds`
+6. Seed the Ozon categories by completing the task `rails ozon_categories:load`. This will be done if you have at least one marketplace_credentials from Ozon.
 
 ### Run Sidekiq
 ```bash

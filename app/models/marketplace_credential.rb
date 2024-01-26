@@ -20,6 +20,14 @@ class MarketplaceCredential < ApplicationRecord
     where(is_valid: true).where('credentials is null')
       .or(where(is_valid: false))
   end
+  scope :ozon, -> do
+    where.associated(:marketplace)
+         .where('marketplaces.name = ?', Marketplace.ozon.name)
+  end
+  scope :yandex, -> do
+    where.associated(:marketplace)
+         .where('marketplaces.name = ?', Marketplace.yandex.name)
+  end
 
   validates :instance_name, presence: true
 
