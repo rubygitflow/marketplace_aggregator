@@ -4,7 +4,7 @@ class BaseApi
   URL = '#marketplace_api_http_domen_name'
 
   attr_accessor :connection
-  attr_reader :response_content_type
+  attr_reader :response_content_type, :status
 
   def initialize(mp_credential, options = {})
     @connection = Connection.start
@@ -53,21 +53,22 @@ class BaseApi
 
   def api_call
     response = yield
+    @status = response.status
     @response_content_type = content_type(response.headers)
     body = response_parse(response.body)
     raise_error(
-      response.status,
       error_message(body)
     )
 
-    [response.status, response.headers, body]
+    [@status, response.headers, body]
   end
 
   def error_message(body)
-    raise NotImplementedError, "#{self.class}: #{I18n.t('errors.marketplace_has_not_been_selected')}"
+    raise NotImplementedError, "#{self.class}.#{__method__}: #{I18n.t('errors.marketplace_has_not_been_selected')}"
   end
 
-  def raise_error(status, message)
+  # rubocop:disable Metrics/AbcSize:
+  def raise_error(message)
     return unless @raise_an_error
     return if status < 400
 
@@ -81,6 +82,7 @@ class BaseApi
       raise MarketplaceAggregator::ApiError.new(status, message, @marketplace_credential.id)
     end
   end
+  # rubocop:enable Metrics/AbcSize:
 
   def content_type(headers)
     case headers.[]('content-type')

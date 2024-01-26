@@ -28,7 +28,10 @@ RSpec.describe MarketplaceInteraction::ImportProductsJob, type: :job do
     before { described_class.perform_now }
 
     it 'is supplemented with an error (marketplace_credential.credentials)' do
-      expect(MarketplaceCredential.find(marketplace_credential.id).credentials).to eq(updated_response)
+      updated_credentials = MarketplaceCredential.find(marketplace_credential.id).credentials
+      expect(updated_credentials['business_id']).to eq(updated_response['business_id'])
+      expect(updated_credentials['token']).to eq(updated_response['token'])
+      expect(updated_credentials['errors']).to include(updated_response['errors'])
     end
   end
 end

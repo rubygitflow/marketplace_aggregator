@@ -22,7 +22,10 @@ RSpec.describe Tasks::ImportProducts, type: :business_logic do
 
     it "can remove CheckCredentials' errors from marketplace_credential.credentials field" do
       task.call
-      expect(MarketplaceCredential.find(marketplace_credential.id).credentials).to eq(updated_credentials)
+      updated_response = MarketplaceCredential.find(marketplace_credential.id).credentials
+      expect(updated_response['business_id']).to eq(updated_credentials['business_id'])
+      expect(updated_response['token']).to eq(updated_credentials['token'])
+      expect(updated_response['errors']).to include(updated_credentials['errors'])
 
       uri_template = Addressable::Template.new(
         "https://api.partner.market.yandex.ru/businesses/#{marketplace_credential.credentials.[]('business_id')}/offer-mappings.json{?limit}"

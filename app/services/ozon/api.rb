@@ -2,6 +2,7 @@
 
 module Ozon
   class Api < BaseApi
+    # https://docs.ozon.ru/api/seller/#section/Chto-takoe-rabochaya-sreda
     URL = 'https://api-seller.ozon.ru'
 
     def initialize(mp_credential, options = {})
