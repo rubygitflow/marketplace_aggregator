@@ -14,10 +14,25 @@ module Ozon
     def call
       @http_client = http_client
       list = http_client_call
+      @imported_list = []
       scalp(
         list: list[:result],
         previous_category: Struct::CategoryOzon.new('', nil, nil)
       )
+      OzonCategory.import @imported_list,
+                          on_duplicate_key_ignore: true,
+                          on_duplicate_key_update: {
+                            conflict_target: %i[
+                              description_category_id
+                              type_id
+                            ],
+                            columns: %i[
+                              category_name
+                              category_disabled
+                              type_name
+                              type_disabled
+                            ]
+                          }
     end
 
     private
@@ -66,25 +81,25 @@ module Ozon
     # rubocop:enable Metrics/AbcSize
 
     def add_category(previous)
-      category = OzonCategory.find_or_initialize_by(
+      @imported_list << {
         description_category_id: previous[:id],
-        type_id: nil
-      )
-      category.category_name = previous[:name]
-      category.category_disabled = previous[:disabled]
-      category.save! if category.changed?
+        category_name: previous[:name],
+        category_disabled: previous[:disabled],
+        type_id: 0,
+        type_name: nil,
+        type_disabled: false
+      }
     end
 
     def add_type(previous_category, type_name, type_id, type_disabled)
-      category = OzonCategory.find_or_initialize_by(
+      @imported_list << {
         description_category_id: previous_category[:id],
-        type_id:
-      )
-      category.category_name = previous_category[:name]
-      category.category_disabled = previous_category[:disabled]
-      category.type_name = type_name
-      category.type_disabled = type_disabled
-      category.save! if category.changed?
+        category_name: previous_category[:name],
+        category_disabled: previous_category[:disabled],
+        type_id:,
+        type_name:,
+        type_disabled:
+      }
     end
   end
 end

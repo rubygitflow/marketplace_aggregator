@@ -20,7 +20,6 @@ module Yandex
         end
       end
 
-      # rubocop:disable Metrics/MethodLength
       # rubocop:disable Metrics/AbcSize
       # rubocop:disable Metrics/CyclomaticComplexity
       # rubocop:disable Metrics/PerceivedComplexity
@@ -52,7 +51,6 @@ module Yandex
       # rubocop:enable Metrics/PerceivedComplexity
       # rubocop:enable Metrics/CyclomaticComplexity
       # rubocop:enable Metrics/AbcSize
-      # rubocop:enable Metrics/MethodLength
 
       private :import_payload, :prepare_product
     end

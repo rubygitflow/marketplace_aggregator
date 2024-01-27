@@ -26,5 +26,19 @@ RSpec.describe Ozon::LoadCategories, type: :service do
       expect(category.type_disabled).to be false
     end
     # rubocop:enable Style/NumericLiterals
+
+    it 'does not add null type_ids' do
+      category = OzonCategory.where(
+        type_id: nil
+      )
+      expect(category.size).to eq 0
+    end
+
+    it 'does not add null description_category_ids' do
+      category = OzonCategory.where(
+        description_category_id: nil
+      )
+      expect(category.size).to eq 0
+    end
   end
 end

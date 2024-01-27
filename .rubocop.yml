@@ -43,8 +43,9 @@ Style/Documentation:
   Description: 'Document classes and non-namespace modules.'
   Enabled: false
 
+# 20
 Metrics/MethodLength:
-  Max: 20
+  Max: 25
 
 # 40
 Metrics/BlockLength:

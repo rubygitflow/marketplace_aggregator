@@ -210,11 +210,11 @@ ALTER SEQUENCE public.marketplaces_id_seq OWNED BY public.marketplaces.id;
 CREATE TABLE public.ozon_categories (
     id bigint NOT NULL,
     category_name character varying,
-    description_category_id integer,
-    category_disabled boolean DEFAULT false,
+    description_category_id integer DEFAULT 0 NOT NULL,
+    category_disabled boolean DEFAULT false NOT NULL,
     type_name character varying,
-    type_id integer,
-    type_disabled boolean DEFAULT false,
+    type_id integer DEFAULT 0 NOT NULL,
+    type_disabled boolean DEFAULT false NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
@@ -484,6 +484,10 @@ ALTER TABLE ONLY public.marketplace_credentials
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240127162617'),
+('20240127162203'),
+('20240127161828'),
+('20240127161210'),
 ('20240126144101'),
 ('20240106161532'),
 ('20240106161520'),
