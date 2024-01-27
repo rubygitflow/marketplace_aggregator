@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Ozon::Api::DescriptionCategoryTree, type: :service do
+RSpec.describe Ozon::Api::ProductInfoDescription, type: :service do
   let!(:marketplace_credential) { create(:marketplace_credential, :ozon) }
   let(:stubs)  { Faraday::Adapter::Test::Stubs.new }
   let(:conn)   { Faraday.new { |b| b.adapter(:test, stubs) } }
@@ -13,14 +13,14 @@ RSpec.describe Ozon::Api::DescriptionCategoryTree, type: :service do
   describe 'HTTP POST' do
     context 'with a successful Request' do
       it 'parses status, headers, body quickly' do
-        stubs.post('/v1/description-category/tree') do |env|
-          expect(env.url.path).to eq('/v1/description-category/tree')
+        stubs.post('/v1/product/info/description') do |env|
+          expect(env.url.path).to eq('/v1/product/info/description')
           [
             200,
             {
               'Content-Type' => 'application/json'
             },
-            load_json('import/ozon_category')
+            load_json('import/ozon_description_1')
           ]
         end
 
@@ -28,7 +28,7 @@ RSpec.describe Ozon::Api::DescriptionCategoryTree, type: :service do
 
         expect(status).to eq(200)
         expect(headers['Content-Type']).to eq('application/json')
-        expect(body[:result].first[:category_name]).to eq('Одежда')
+        expect(body.dig(:result, :description)).to include('Des_1')
         stubs.verify_stubbed_calls
       end
     end

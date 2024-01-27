@@ -1,0 +1,32 @@
+{
+    "result":
+    {
+        "items":
+        [
+            {
+                "product_id": 10077605,
+                "offer_id": "Арт.B.син р.30",
+                "is_fbo_visible": true,
+                "is_fbs_visible": true,
+                "archived": false,
+                "is_discounted": false
+            },
+            {
+                "product_id": 10077606,
+                "offer_id": "Арт.B.син р.24",
+                "is_fbo_visible": true,
+                "is_fbs_visible": true,
+                "archived": false,
+                "is_discounted": false
+            },
+            {
+                "product_id": 10077607,
+                "offer_id": "Арт.B.син р.29",
+                "is_fbo_visible": true,
+                "is_fbs_visible": true,
+                "archived": false,
+                "is_discounted": false
+            }
+        ]
+    }
+}
