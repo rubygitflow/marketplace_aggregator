@@ -1,12 +1,11 @@
 # frozen_string_literal: true
 
-module Yandex
+# https://docs.ozon.ru/api/seller/#operation/ProductAPI_GetProductList
+
+module Ozon
   class ProductsDownloader
     module DownloadingScheme
-      include Yandex::ProductsDownloader::ImportingScheme
-
-      PAGE_LIMIT = 200
-      LIMITS = { limit: PAGE_LIMIT }.freeze
+      PAGE_LIMIT = 1000
 
       def download_products
         # 1. download products not from the archive
@@ -27,40 +26,55 @@ module Yandex
         circle_downloader
       end
 
+      # rubocop:disable Metrics/AbcSize
+      # rubocop:disable Metrics/CyclomaticComplexity
+      # rubocop:disable Metrics/PerceivedComplexity
+      # rubocop:disable Metrics/MethodLength
       def circle_downloader
         page_tokens = {}
         loop do
-          status, _, body = @http_client.call(
-            params: LIMITS.merge(page_tokens),
-            body: { archived: @archive }
+          status, _, body = @http_client_list.call(
+            body: {
+              filter: {
+                visibility: (@archive ? 'ARCHIVED' : 'ALL')
+              }.merge(page_tokens),
+              limit: PAGE_LIMIT
+            }
           )
+
           if status == 200
             # rubocop:disable Lint/RedundantSplatExpansion
-            items = body&.dig(*%i[result offerMappings]) || []
+            items = body&.dig(*%i[result items]) || []
             # rubocop:enable Lint/RedundantSplatExpansion
             break if items.blank?
 
-            import_payload(items)
+            # download_product_info_list(items)
+            # for
+            @parsed_ids += items.map { |elem| elem[:product_id].to_s }
           else # any other status anyway
             # To be safe, but we shouldn't get here.
             # This is possible if the status is < 400 and the status is != 200.
             raise MarketplaceAggregator::ApiError.new(
               status,
-              I18n.t('errors.something_went_wrong'),
+              I18n.t('errors.downloading_the_product_list'),
               mp_credential.id
             )
           end
 
           # rubocop:disable Lint/RedundantSplatExpansion
-          page_token = body&.dig(*%i[result paging nextPageToken])
+          page_token = body&.dig(*%i[result last_id])
           # rubocop:enable Lint/RedundantSplatExpansion
           if page_token.blank?
             break
           else
-            page_tokens = { page_token: }
+            page_tokens = { last_id: page_token }
           end
         end
       end
+      # rubocop:enable Metrics/MethodLength
+      # rubocop:enable Metrics/PerceivedComplexity
+      # rubocop:enable Metrics/CyclomaticComplexity
+      # rubocop:enable Metrics/AbcSize
 
       private :downloading_archived_products, :downloading_unarchived_products, :circle_downloader
     end

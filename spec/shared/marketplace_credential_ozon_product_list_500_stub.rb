@@ -3,13 +3,13 @@
 RSpec.shared_context 'when marketplace_credential ozon product/list 500 stub' do
   let!(:marketplace_credential) { create(:marketplace_credential, :ozon) }
   let!(:mp_headers) do
-  {
-    'Api-Key' => marketplace_credential.credentials['api_key'],
-  'Client-Id' => marketplace_credential.credentials['client_id'],
-  'x-o3-app-name' => ENV.fetch('OZON_APP_ID'),
-  'Content-Type' => 'application/json'
-  }
-end
+    {
+      'Api-Key' => marketplace_credential.credentials['api_key'],
+      'Client-Id' => marketplace_credential.credentials['client_id'],
+      'x-o3-app-name' => ENV.fetch('OZON_APP_ID'),
+      'Content-Type' => 'application/json'
+    }
+  end
 
   let!(:uri_template) do
     Addressable::Template.new(

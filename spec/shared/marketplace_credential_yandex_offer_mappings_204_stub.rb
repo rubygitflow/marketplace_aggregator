@@ -11,7 +11,6 @@ RSpec.shared_context 'when marketplace_credential yandex offer-mappings 204 stub
     stub_request(:any, uri_template)
       .with(
         {
-          body: { archived: true },
           headers: {
             'Authorization' => "OAuth oauth_token=\"#{marketplace_credential.credentials.[]('token')}\", oauth_client_id=\"#{ENV.fetch('YANDEX_APP_ID')}\"",
             'Content-Type' => 'application/json'
@@ -19,8 +18,7 @@ RSpec.shared_context 'when marketplace_credential yandex offer-mappings 204 stub
         }
       )
       .to_return(
-        status: 204,
-        headers: { 'Content-Type' => 'application/json;charset=utf-8' }
+        status: 204
       )
   end
 end

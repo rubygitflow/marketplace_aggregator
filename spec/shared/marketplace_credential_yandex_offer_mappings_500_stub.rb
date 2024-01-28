@@ -18,7 +18,7 @@ RSpec.shared_context 'when marketplace_credential yandex offer-mappings 500 stub
         }
       )
       .to_return(
-        body: '{}',
+        body: load_json('import/yandex_code_500'),
         status: 500,
         headers: { 'Content-Type' => 'application/json;charset=utf-8' }
       )

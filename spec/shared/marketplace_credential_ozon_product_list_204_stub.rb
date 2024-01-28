@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.shared_context 'when marketplace_credential ozon product/list 502 stub' do
+RSpec.shared_context 'when marketplace_credential ozon product/list 204 stub' do
   let!(:marketplace_credential) { create(:marketplace_credential, :ozon) }
   let!(:mp_headers) do
     {
@@ -9,17 +9,6 @@ RSpec.shared_context 'when marketplace_credential ozon product/list 502 stub' do
       'x-o3-app-name' => ENV.fetch('OZON_APP_ID'),
       'Content-Type' => 'application/json'
     }
-  end
-  let!(:html_response) do
-    <<~HTML
-      <html>
-      <head><title>502 Bad Gateway</title></head>
-      <body>
-      <center><h1>502 Bad Gateway</h1></center>
-      <hr><center>nginx</center>
-      </body>
-      </html>
-    HTML
   end
 
   let!(:uri_template) do
@@ -42,9 +31,7 @@ RSpec.shared_context 'when marketplace_credential ozon product/list 502 stub' do
         }
       )
       .to_return(
-        body: html_response.strip,
-        status: 502,
-        headers: { 'content-type' => 'text/html' }
+        status: 204
       )
   end
 end

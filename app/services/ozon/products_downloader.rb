@@ -6,6 +6,8 @@
 
 module Ozon
   class ProductsDownloader
+    include Ozon::ProductsDownloader::DownloadingScheme
+
     attr_reader :mp_credential, :parsed_ids, :http_client_list, :http_client_info, :http_client_description
 
     def initialize(mp_credential)
@@ -19,7 +21,7 @@ module Ozon
     def call
       return false if mp_credential.credentials.nil?
 
-      # download_products
+      download_products
       tag_lost_products!
       true
     end
@@ -28,10 +30,10 @@ module Ozon
 
     def tag_lost_products!
       products = Product.where(marketplace_credential_id: mp_credential.id)
-      lost_offer_ids = products.pluck(:offer_id) - parsed_ids
+      lost_product_ids = products.pluck(:product_id) - parsed_ids
 
       products.where(
-        offer_id: lost_offer_ids
+        product_id: lost_product_ids
       ).update_all(scrub_status: 'gone')
     end
   end

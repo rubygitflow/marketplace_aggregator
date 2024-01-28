@@ -3,13 +3,13 @@
 RSpec.shared_context 'with marketplace_credential ozon product/list' do
   let!(:marketplace_credential) { create(:marketplace_credential, :ozon) }
   let!(:mp_headers) do
-  {
-    'Api-Key' => marketplace_credential.credentials['api_key'],
-  'Client-Id' => marketplace_credential.credentials['client_id'],
-  'x-o3-app-name' => ENV.fetch('OZON_APP_ID'),
-  'Content-Type' => 'application/json'
-  }
-end
+    {
+      'Api-Key' => marketplace_credential.credentials['api_key'],
+      'Client-Id' => marketplace_credential.credentials['client_id'],
+      'x-o3-app-name' => ENV.fetch('OZON_APP_ID'),
+      'Content-Type' => 'application/json'
+    }
+  end
 
   let!(:uri_template) do
     Addressable::Template.new(
@@ -27,13 +27,33 @@ end
     )
   end
 
-  let!(:stub_all) do
+  let!(:stub_all_last_id) do
     stub_request(:post, uri_template)
       .with(
         {
           body: {
             "filter": {
               "visibility": 'ALL'
+            },
+            "limit": 1000
+          },
+          headers: mp_headers
+        }
+      )
+      .to_return(
+        body: load_json('import/ozon_list_all_last_id'),
+        status: 200,
+        headers: { 'content-type' => 'application/json' }
+      )
+  end
+  let!(:stub_all) do
+    stub_request(:post, uri_template)
+      .with(
+        {
+          body: {
+            "filter": {
+              "visibility": 'ALL',
+              "last_id": 'WyI=='
             },
             "limit": 1000
           },
@@ -72,9 +92,9 @@ end
         {
           body: {
             "product_id": [
-              10_077_605,
-              10_077_606,
-              10_077_607
+              10077605,
+              10077606,
+              10077607
             ]
           },
           headers: mp_headers
@@ -92,9 +112,9 @@ end
         {
           body: {
             "product_id": [
-              10_077_604,
-              10_077_608,
-              10_077_611
+              10077604,
+              10077608,
+              10077611
             ]
           },
           headers: mp_headers
@@ -111,7 +131,7 @@ end
     stub_request(:post, uri_template3)
       .with(
         {
-          body: { "product_id": 10_077_605 },
+          body: { "product_id": 10077605 },
           headers: mp_headers
         }
       )
@@ -125,7 +145,7 @@ end
     stub_request(:post, uri_template3)
       .with(
         {
-          body: { "product_id": 10_077_606 },
+          body: { "product_id": 10077606 },
           headers: mp_headers
         }
       )
@@ -139,7 +159,7 @@ end
     stub_request(:post, uri_template3)
       .with(
         {
-          body: { "product_id": 10_077_607 },
+          body: { "product_id": 10077607 },
           headers: mp_headers
         }
       )
@@ -153,7 +173,7 @@ end
     stub_request(:post, uri_template3)
       .with(
         {
-          body: { "product_id": 10_077_604 },
+          body: { "product_id": 10077604 },
           headers: mp_headers
         }
       )
@@ -167,7 +187,7 @@ end
     stub_request(:post, uri_template3)
       .with(
         {
-          body: { "product_id": 10_077_608 },
+          body: { "product_id": 10077608 },
           headers: mp_headers
         }
       )
@@ -181,7 +201,7 @@ end
     stub_request(:post, uri_template3)
       .with(
         {
-          body: { "product_id": 10_077_611 },
+          body: { "product_id": 10077611 },
           headers: mp_headers
         }
       )

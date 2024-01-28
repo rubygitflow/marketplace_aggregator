@@ -159,3 +159,7 @@ Layout/LineLength:
   Exclude:
     - spec/shared/**/*
     - spec/business_logic/tasks/import_products_spec.rb
+
+Style/NumericLiterals:
+  Exclude:
+    - spec/shared/**/*

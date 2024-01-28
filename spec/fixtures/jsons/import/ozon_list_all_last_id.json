@@ -1,0 +1,18 @@
+{
+    "result":
+    {
+        "items":
+        [
+            {
+                "product_id": 10077600,
+                "offer_id": "Арт.B.роз р.20",
+                "is_fbo_visible": true,
+                "is_fbs_visible": true,
+                "archived": false,
+                "is_discounted": false
+            }
+        ],
+        "total": 4,
+        "last_id": "WyI=="
+    }
+}

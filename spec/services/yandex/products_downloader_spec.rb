@@ -5,13 +5,21 @@ require 'rails_helper'
 RSpec.describe Yandex::ProductsDownloader, type: :service do
   describe 'successful downloading of products' do
     include_context 'with marketplace_credential yandex offer-mappings'
+    let(:obj) { described_class.new(marketplace_credential) }
 
     before do
-      described_class.new(marketplace_credential).call
+      obj.call
     end
 
     it 'gains new records about the products on the marketplace' do
       expect(Product.count).to eq 2
+    end
+
+    it 'imports product list' do
+      expect(obj.parsed_ids).to eq %w[
+        00040263
+        00040264
+      ]
     end
 
     # rubocop:disable RSpec/MultipleExpectations
@@ -33,28 +41,31 @@ RSpec.describe Yandex::ProductsDownloader, type: :service do
   describe 'Unsuccessful downloading of products' do
     context 'with failed 500' do
       include_context 'when marketplace_credential yandex offer-mappings 500 stub'
+      let(:obj) { described_class.new(marketplace_credential) }
 
       it 'rejects data upload with an error' do
-        expect { described_class.new(marketplace_credential).call }
-          .to raise_error(MarketplaceAggregator::ApiError)
+        expect { obj.call }.to raise_error(MarketplaceAggregator::ApiError)
+        expect(obj.http_client.status).to eq 500
       end
     end
 
     context 'with failed 503' do
       include_context 'when marketplace_credential yandex offer-mappings 503 stub'
+      let(:obj) { described_class.new(marketplace_credential) }
 
       it 'rejects data upload with an error' do
-        expect { described_class.new(marketplace_credential).call }
-          .to raise_error(MarketplaceAggregator::ApiError)
+        expect { obj.call }.to raise_error(MarketplaceAggregator::ApiError)
+        expect(obj.http_client.status).to eq 503
       end
     end
 
     context 'with failed 204' do
       include_context 'when marketplace_credential yandex offer-mappings 204 stub'
+      let(:obj) { described_class.new(marketplace_credential) }
 
       it 'checks the empty body in the response' do
-        expect { described_class.new(marketplace_credential).call }
-          .to raise_error(MarketplaceAggregator::ApiError)
+        expect { obj.call }.to raise_error(MarketplaceAggregator::ApiError)
+        expect(obj.http_client.status).to eq 204
       end
     end
   end
