@@ -44,7 +44,7 @@ module Products
       false
     rescue MarketplaceAggregator::ApiError => e
       ErrorLogger.push e
-      # restart task after an hour (for example)
+      # TODO: restart task after an hour (for example)
       false
     end
   end

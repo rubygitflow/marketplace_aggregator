@@ -17,7 +17,7 @@ module Ozon
       @imported_list = []
       scalp(
         list: list[:result],
-        previous_category: Struct::CategoryOzon.new('', nil, nil)
+        previous_category: Struct::CategoryOzon.new(name: '')
       )
       OzonCategory.import @imported_list,
                           on_duplicate_key_ignore: true,

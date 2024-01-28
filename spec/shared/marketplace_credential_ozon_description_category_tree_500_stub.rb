@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.shared_context 'with marketplace_credential ozon description-category/tree 500 stub' do
+RSpec.shared_context 'when marketplace_credential ozon description-category/tree 500 stub' do
   let!(:marketplace_credential) { create(:marketplace_credential, :ozon) }
   let!(:uri_template) do
     Addressable::Template.new(

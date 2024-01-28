@@ -6,7 +6,7 @@ module Tasks
       MarketplaceCredential.find_each(batch_size: 100) do |mp_credential|
         # 1. correcting client mistakes
         mp_credential.fix_credentials!
-        # 2. checking the validity of credentials
+        # 2. verifying the validity of credentials
         Operations::CheckCredentials.new(mp_credential).call
         # 3. refresh the record
         mp_credential.save! if mp_credential.changed?

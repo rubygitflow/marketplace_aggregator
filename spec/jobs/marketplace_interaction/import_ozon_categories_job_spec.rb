@@ -29,7 +29,7 @@ RSpec.describe MarketplaceInteraction::ImportOzonCategoriesJob, type: :job do
     end
 
     context 'without recording to the database' do
-      include_context 'with marketplace_credential ozon description-category/tree 500 stub'
+      include_context 'when marketplace_credential ozon description-category/tree 500 stub'
 
       before { described_class.perform_now }
 
