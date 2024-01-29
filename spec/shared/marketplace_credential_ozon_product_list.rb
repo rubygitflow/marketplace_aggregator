@@ -86,8 +86,26 @@ RSpec.shared_context 'with marketplace_credential ozon product/list' do
       )
   end
 
+  let!(:stub2_all_first) do
+    stub_request(:post, uri_template2)
+      .with(
+        {
+          body: {
+            "product_id": [
+              10077600
+            ]
+          },
+          headers: mp_headers
+        }
+      )
+      .to_return(
+        body: load_json('import/ozon_info_all_first'),
+        status: 200,
+        headers: { 'content-type' => 'application/json' }
+      )
+  end
   let!(:stub2_all) do
-    stub_request(:post, uri_template)
+    stub_request(:post, uri_template2)
       .with(
         {
           body: {
@@ -107,7 +125,7 @@ RSpec.shared_context 'with marketplace_credential ozon product/list' do
       )
   end
   let!(:stub2_archived) do
-    stub_request(:post, uri_template)
+    stub_request(:post, uri_template2)
       .with(
         {
           body: {

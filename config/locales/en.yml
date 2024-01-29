@@ -34,3 +34,4 @@ en:
     marketplace_has_not_been_selected: 'Marketplace has not been selected'
     something_went_wrong: 'Something went wrong'
     downloading_the_product_list: 'Something went wrong with downloading the product list'
+    downloading_the_product_info_list: 'Something went wrong with downloading the product info list'

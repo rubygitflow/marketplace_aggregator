@@ -1,0 +1,36 @@
+# frozen_string_literal: true
+
+RSpec.shared_context 'when marketplace_credential ozon product/info 204 stub' do
+  let!(:marketplace_credential) { create(:marketplace_credential, :ozon) }
+  let!(:mp_headers) do
+    {
+      'Api-Key' => marketplace_credential.credentials['api_key'],
+      'Client-Id' => marketplace_credential.credentials['client_id'],
+      'x-o3-app-name' => ENV.fetch('OZON_APP_ID'),
+      'Content-Type' => 'application/json'
+    }
+  end
+
+  let!(:uri_template) do
+    Addressable::Template.new(
+      'https://api-seller.ozon.ru/v2/product/info/list'
+    )
+  end
+
+  let!(:stub_all) do
+    stub_request(:post, uri_template)
+      .with(
+        {
+          body: {
+            "product_id": [
+              10077600
+            ]
+          },
+          headers: mp_headers
+        }
+      )
+      .to_return(
+        status: 204
+      )
+  end
+end

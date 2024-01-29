@@ -5,6 +5,8 @@
 module Ozon
   class ProductsDownloader
     module DownloadingScheme
+      include Ozon::ProductsDownloader::LoadingInfoList
+
       PAGE_LIMIT = 1000
 
       def download_products
@@ -48,9 +50,11 @@ module Ozon
             # rubocop:enable Lint/RedundantSplatExpansion
             break if items.blank?
 
-            # download_product_info_list(items)
             # for
-            @parsed_ids += items.map { |elem| elem[:product_id].to_s }
+            # @parsed_ids += items.map { |elem| elem[:product_id].to_s }
+            download_product_info_list(
+              items.map { |elem| elem[:product_id] }
+            )
           else # any other status anyway
             # To be safe, but we shouldn't get here.
             # This is possible if the status is < 400 and the status is != 200.

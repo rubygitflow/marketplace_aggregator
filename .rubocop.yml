@@ -163,3 +163,4 @@ Layout/LineLength:
 Style/NumericLiterals:
   Exclude:
     - spec/shared/**/*
+    - spec/services/ozon/products_downloader/loading_info_list_spec.rb
