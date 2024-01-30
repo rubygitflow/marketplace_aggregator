@@ -10,7 +10,7 @@ module Ozon
           product_id = item[:id]
           next unless product_id
 
-          @parsed_ids << product_id.to_s
+          @parsed_ids[product_id.to_s] = 1
           @product = Product.find_or_initialize_by(
             marketplace_credential_id: mp_credential.id,
             product_id:

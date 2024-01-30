@@ -14,7 +14,7 @@ RSpec.describe Ozon::ProductsDownloader::LoadingInfoList, type: :service do
     end
 
     it 'returns an input list of products' do
-      expect(obj.instance_variable_get(:@parsed_ids)).to eq items.map(&:to_s)
+      expect(obj.instance_variable_get(:@parsed_ids).keys).to eq items.map(&:to_s)
     end
   end
 

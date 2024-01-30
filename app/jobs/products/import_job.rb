@@ -16,16 +16,26 @@ module Products
     def perform(is_client_queue, mp_credential_id)
       @is_client_queue = is_client_queue
       @mp_credential = MarketplaceCredential.find_by(id: mp_credential_id)
-      return if @mp_credential.blank? || @mp_credential.deleted_at
+      return if irrelevant?
 
       @mp_credential.update(last_sync_at_products: Time.current) if downloadable?
     end
 
     private
 
+    def irrelevant?
+      @mp_credential.blank? ||
+        @mp_credential.credentials.blank? ||
+        @mp_credential.deleted_at
+    end
+
+    # rubocop:disable Metrics/AbcSize
     def downloadable?
       downloader = @mp_credential.marketplace.to_constant_with(DOWNLOADER_CLASS)
-      downloader.new(@mp_credential).call
+                                 .new(@mp_credential)
+      back_time = Time.now
+      downloader.call
+      Rails.logger.info log(downloader.parsed_ids.size, back_time).strip
     rescue NameError => e
       # We are checking the code. It's fixable
       ErrorLogger.push_trace e
@@ -46,6 +56,15 @@ module Products
       ErrorLogger.push e
       # TODO: restart task after an hour (for example)
       false
+    end
+    # rubocop:enable Metrics/AbcSize
+
+    def log(count, back_time)
+      <<~MESSAGE
+        import: :mp_credential[#{@mp_credential.id}] — \
+        [#{count}] - \
+        OK (in #{(Time.now - back_time).round(3)} sec)
+      MESSAGE
     end
   end
 end

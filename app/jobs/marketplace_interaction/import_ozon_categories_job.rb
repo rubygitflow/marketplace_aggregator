@@ -6,11 +6,11 @@ module MarketplaceInteraction
 
     def perform
       mp_credential = MarketplaceCredential.ozon.valid.last
-      back = Time.now
+      back_time = Time.now
       Ozon::LoadCategories.new(mp_credential).call
 
       # TODO: To send a report on the successful update of the list of categories
-      Rails.logger.info "download: :ozon_categories — OK (in #{(Time.now - back).round(3)} sec)"
+      Rails.logger.info "download: :ozon_categories — OK (in #{(Time.now - back_time).round(3)} sec)"
     rescue StandardError => e
       ErrorLogger.push_trace e
     end

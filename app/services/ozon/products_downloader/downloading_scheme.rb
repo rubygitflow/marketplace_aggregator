@@ -12,8 +12,11 @@ module Ozon
       def download_products
         # 1. download products not from the archive
         downloading_unarchived_products
+        total = @parsed_ids.size
+        Rails.logger.info "import: :mp_credential[#{@mp_credential.id}] — actual[#{total}] — Done"
         # 2. download products from the archive
         downloading_archived_products
+        Rails.logger.info "import: :mp_credential[#{@mp_credential.id}] — archived[#{@parsed_ids.size - total}] — Done"
       end
 
       def downloading_archived_products
@@ -28,7 +31,6 @@ module Ozon
         circle_downloader
       end
 
-      # rubocop:disable Metrics/AbcSize
       # rubocop:disable Metrics/MethodLength
       def circle_downloader
         page_tokens = {}
@@ -41,19 +43,7 @@ module Ozon
               limit: PAGE_LIMIT
             }
           )
-
-          if status == 200
-            # rubocop:disable Lint/RedundantSplatExpansion
-            items = body&.dig(*%i[result items]) || []
-            # rubocop:enable Lint/RedundantSplatExpansion
-            break if items.blank?
-
-            # for
-            # @parsed_ids += items.map { |elem| elem[:product_id].to_s }
-            download_product_info_list(
-              items.map { |elem| elem[:product_id] }
-            )
-          else # any other status anyway
+          if status != 200
             # To be safe, but we shouldn't get here.
             # This is possible if the status is < 400 and the status is != 200.
             raise MarketplaceAggregator::ApiError.new(
@@ -62,6 +52,13 @@ module Ozon
               mp_credential.id
             )
           end
+
+          # rubocop:disable Lint/RedundantSplatExpansion
+          items = body&.dig(*%i[result items]) || []
+          # rubocop:enable Lint/RedundantSplatExpansion
+          break if items.blank?
+
+          return unless load_info?(items)
 
           # rubocop:disable Lint/RedundantSplatExpansion
           page_token = body&.dig(*%i[result last_id])
@@ -74,9 +71,19 @@ module Ozon
         end
       end
       # rubocop:enable Metrics/MethodLength
-      # rubocop:enable Metrics/AbcSize
 
-      private :downloading_archived_products, :downloading_unarchived_products, :circle_downloader
+      def load_info?(items)
+        # Unfortunately, the marketplace returns data in a circle from the beginning
+        # of the list with last_id equal to the last element of the list of user data.
+        # Therefore, we need to take measures to protect against the "endless cycle".
+        items.map! { |elem| elem[:product_id] }
+        return false if @parsed_ids.key?(items[0].to_s)
+
+        download_product_info_list(items)
+        true
+      end
+
+      private :downloading_archived_products, :downloading_unarchived_products, :circle_downloader, :load_info?
     end
   end
 end

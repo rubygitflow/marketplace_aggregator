@@ -11,8 +11,11 @@ module Yandex
       def download_products
         # 1. download products not from the archive
         downloading_unarchived_products
+        total = @parsed_ids.size
+        Rails.logger.info "import: :mp_credential[#{@mp_credential.id}] — actual[#{total}] — Done"
         # 2. download products from the archive
         downloading_archived_products
+        Rails.logger.info "import: :mp_credential[#{@mp_credential.id}] — archived[#{@parsed_ids.size - total}] — Done"
       end
 
       def downloading_archived_products

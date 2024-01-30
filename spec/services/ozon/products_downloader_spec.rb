@@ -18,7 +18,7 @@ RSpec.describe Ozon::ProductsDownloader, type: :service do
     end
 
     it 'imports product list' do
-      expect(obj.parsed_ids).to eq %w[
+      expect(obj.parsed_ids.keys).to eq %w[
         10077600
         10077605
         10077606

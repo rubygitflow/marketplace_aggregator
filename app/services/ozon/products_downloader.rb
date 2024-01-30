@@ -15,7 +15,7 @@ module Ozon
       @http_client_list = Ozon::Api::ProductList.new(mp_credential)
       @http_client_info = Ozon::Api::ProductInfoList.new(mp_credential)
       @http_client_description = Ozon::Api::ProductInfoDescription.new(mp_credential)
-      @parsed_ids = []
+      @parsed_ids = {}
     end
 
     def call
@@ -30,7 +30,7 @@ module Ozon
 
     def tag_lost_products!
       products = Product.where(marketplace_credential_id: mp_credential.id)
-      lost_product_ids = products.pluck(:product_id) - parsed_ids
+      lost_product_ids = products.pluck(:product_id) - parsed_ids.keys
 
       products.where(
         product_id: lost_product_ids
