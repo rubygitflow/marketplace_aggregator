@@ -29,8 +29,6 @@ module Ozon
       end
 
       # rubocop:disable Metrics/AbcSize
-      # rubocop:disable Metrics/CyclomaticComplexity
-      # rubocop:disable Metrics/PerceivedComplexity
       # rubocop:disable Metrics/MethodLength
       def circle_downloader
         page_tokens = {}
@@ -76,8 +74,6 @@ module Ozon
         end
       end
       # rubocop:enable Metrics/MethodLength
-      # rubocop:enable Metrics/PerceivedComplexity
-      # rubocop:enable Metrics/CyclomaticComplexity
       # rubocop:enable Metrics/AbcSize
 
       private :downloading_archived_products, :downloading_unarchived_products, :circle_downloader

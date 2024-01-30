@@ -22,7 +22,6 @@ RSpec.describe Yandex::ProductsDownloader, type: :service do
       ]
     end
 
-    # rubocop:disable RSpec/MultipleExpectations
     it 'imports product description' do
       product = Product.find_by(offer_id: '00040263')
       expect(product.name).to eq 'Ножницы садовые 300 мм серебряный/зеленый'
@@ -32,10 +31,10 @@ RSpec.describe Yandex::ProductsDownloader, type: :service do
       expect(product.skus).to eq ['100473183912']
       expect(product.scrub_status).to eq 'success'
       expect(product.schemes).to eq %w[DBS EXPRESS FBS FBY]
-      expect(product.stock).to eq nil
+      expect(product.stock).to be_nil
+      expect(product.category_title).to eq 'Садовый инвентарь'
       expect(product.product_id).to eq '1755955930'
     end
-    # rubocop:enable RSpec/MultipleExpectations
   end
 
   describe 'Unsuccessful downloading of products' do

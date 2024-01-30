@@ -4,8 +4,9 @@ require:
 RSpec/FilePath:
   Enabled: false
 
+# 7
 RSpec/MultipleExpectations:
-  Max: 7
+  Max: 11
 
 # 5
 RSpec/MultipleMemoizedHelpers:
@@ -27,7 +28,7 @@ RSpec/NamedSubject:
 
 RSpec/MessageSpies:
   Enabled: false
-  
+
 AllCops:
   Exclude:
     - bin/**/*
@@ -163,4 +164,13 @@ Layout/LineLength:
 Style/NumericLiterals:
   Exclude:
     - spec/shared/**/*
+    - spec/factories/**/*
     - spec/services/ozon/products_downloader/loading_info_list_spec.rb
+
+# 7
+Metrics/CyclomaticComplexity:
+  Max: 10
+
+# 7
+Metrics/PerceivedComplexity:
+  Max: 10

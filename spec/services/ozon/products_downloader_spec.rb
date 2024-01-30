@@ -6,6 +6,8 @@ RSpec.describe Ozon::ProductsDownloader, type: :service do
   describe 'successful downloading of products' do
     include_context 'with marketplace_credential ozon product/list'
     let(:obj) { described_class.new(marketplace_credential) }
+    let!(:category1) { create(:ozon_category, :с_15621048_91258) }
+    let!(:category2) { create(:ozon_category, :с_15621032_0) }
 
     before do
       obj.call
@@ -27,18 +29,50 @@ RSpec.describe Ozon::ProductsDownloader, type: :service do
       ]
     end
 
-    it 'imports product description' do
+    it 'imports a product with a single SKU' do
+      product = Product.find_by(product_id: '10077605')
+      expect(product.name).to eq 'Полусапоги женские р.30'
+      expect(product.price).to eq '(345,RUB)'
+      expect(product.status).to eq 'published'
+      expect(product.barcodes).to eq %w[461010135400 OZN34095273]
+      expect(product.skus).to eq %w[123567]
+      expect(product.scrub_status).to eq 'success'
+      expect(product.schemes).to eq []
+      expect(product.stock).to eq 1
+      expect(product.category_title).to eq 'Обувь/Повседневная обувь/Полусапоги'
+      expect(product.offer_id).to eq 'Арт.B.син р.30'
+      expect(product.description).to eq 'Des_1'
+    end
+
+    it 'imports a product description' do
       product = Product.find_by(product_id: '10077607')
       expect(product.name).to eq 'Полусапоги женские р.29'
-      # expect(product.price).to eq '(345,RUR)'
-      # expect(product.status).to eq 'published'
-      # expect(product.barcodes).to eq ['461010135400', 'OZN34095273']
-      # expect(product.skus).to eq ['123567', '123568']
-      # expect(product.scrub_status).to eq 'success'
-      # expect(product.schemes).to eq %w[fbo fbs]
-      # expect(product.stock).to eq 1
+      expect(product.price).to eq '(345,RUB)'
+      expect(product.status).to eq 'published'
+      expect(product.barcodes).to eq %w[461010135400 OZN34095273]
+      expect(product.skus).to eq %w[123567 123568]
+      expect(product.scrub_status).to eq 'success'
+      expect(product.schemes).to eq %w[fbo fbs]
+      expect(product.stock).to eq 1
+      expect(product.category_title).to eq 'Обувь/Повседневная обувь/Полусапоги'
       expect(product.offer_id).to eq 'Арт.B.син р.29'
-      # expect(product.description).to eq 'Des_3'
+      expect(product.description).to eq 'Des_3'
+    end
+
+    it 'intercepts an error when can not importing a product description\
+    for product_id:10077600' do
+      product = Product.find_by(product_id: '10077600')
+      expect(product.name).to eq 'Полусапоги детские р.20'
+      expect(product.price).to eq '(234.9,RUB)'
+      expect(product.status).to eq 'published'
+      expect(product.barcodes).to eq %w[461010135400 OZN34095273]
+      expect(product.skus).to eq %w[123567 123568]
+      expect(product.scrub_status).to eq 'success'
+      expect(product.schemes).to eq %w[fbo fbs]
+      expect(product.stock).to eq 1
+      expect(product.category_title).to eq 'Обувь/'
+      expect(product.offer_id).to eq 'Арт.B.роз р.20'
+      expect(product.description).to be_nil
     end
   end
 

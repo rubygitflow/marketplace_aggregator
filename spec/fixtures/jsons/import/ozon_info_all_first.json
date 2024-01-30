@@ -16,7 +16,7 @@
                     "https://cdn1.ozone.ru/s3/multimedia-h/6118756313.jpg",
                     "https://cdn1.ozone.ru/s3/multimedia-d/6118756309.jpg"
                 ],
-                "marketing_price": "234.0000",
+                "marketing_price": "234.9000",
                 "min_ozon_price": "",
                 "old_price": "567.0000",
                 "premium_price": "",
@@ -120,8 +120,8 @@
                     }
                 },
                 "sku": 0,
-                "description_category_id": 15621048,
-                "type_id": 91258
+                "description_category_id": 15621032,
+                "type_id": 0
             }
         ]
     }

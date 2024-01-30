@@ -21,8 +21,6 @@ module Yandex
       end
 
       # rubocop:disable Metrics/AbcSize
-      # rubocop:disable Metrics/CyclomaticComplexity
-      # rubocop:disable Metrics/PerceivedComplexity
       def prepare_product(item)
         offer = item[:offer]
         @product.name = offer.fetch(:name, '')
@@ -31,7 +29,7 @@ module Yandex
           '.0,', ','
         )
         @product.status = (@archive ? 'archived' : nil) ||
-                          Handles::ProductsDownloader.take_card_status(offer)
+                          Handles::ProductsDownloader.take_yandex_card_status(offer)
         @product.schemes = offer.fetch(:sellingPrograms, []).filter_map do |elem|
           elem[:sellingProgram] if elem[:status] == 'FINE'
         end.sort
@@ -48,8 +46,6 @@ module Yandex
                                   mapping.fetch(:marketCategoryName, nil)
         @product.scrub_status = 'success'
       end
-      # rubocop:enable Metrics/PerceivedComplexity
-      # rubocop:enable Metrics/CyclomaticComplexity
       # rubocop:enable Metrics/AbcSize
 
       private :import_payload, :prepare_product

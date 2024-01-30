@@ -23,19 +23,7 @@
                 "price": "444.0000",
                 "recommended_price": "",
                 "min_price": "",
-                "sources":
-                [
-                    {
-                        "is_enabled": true,
-                        "sku": 123567,
-                        "source": "fbo"
-                    },
-                    {
-                        "is_enabled": true,
-                        "sku": 123568,
-                        "source": "fbs"
-                    }
-                ],
+                "sources": [],
                 "stocks":
                 {
                     "coming": 0,
@@ -78,8 +66,8 @@
                 },
                 "state": "",
                 "service_type": "IS_CODE_SERVICE",
-                "fbo_sku": 123567,
-                "fbs_sku": 123568,
+                "fbo_sku": 0,
+                "fbs_sku": 0,
                 "currency_code": "RUB",
                 "is_kgt": false,
                 "rating": "",
@@ -119,7 +107,7 @@
                         "price_index_value": 0
                     }
                 },
-                "sku": 0,
+                "sku": 123567,
                 "description_category_id": 15621048,
                 "type_id": 91258
             },

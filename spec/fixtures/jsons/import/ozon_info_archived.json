@@ -142,7 +142,7 @@
                 },
                 "sku": 0,
                 "description_category_id": 15621032,
-                "type_id": 91260
+                "type_id": 0
             },
             {
                 "id": 10077608,
@@ -283,7 +283,7 @@
                 },
                 "sku": 0,
                 "description_category_id": 15621032,
-                "type_id": 91260
+                "type_id": 0
             },
             {
                 "id": 10077611,
@@ -424,7 +424,7 @@
                 },
                 "sku": 0,
                 "description_category_id": 15621032,
-                "type_id": 91260
+                "type_id": 0
             }
         ]
     }
