@@ -8,8 +8,6 @@ module Ozon
       include Ozon::ProductsDownloader::ImportingScheme
 
       def download_product_info_list(items)
-        return if items.blank?
-
         status, _, body = @http_client_info.call(
           body: { product_id: items }
         )

@@ -1,41 +1,54 @@
 # frozen_string_literal: true
 
-# https://docs.ozon.ru/api/seller/#operation/ProductAPI_GetProductInfoDescription
-
 module Ozon
   class ProductsDownloader
     module ImportingScheme
+      # rubocop:disable Metrics/AbcSize
       def import_payload(items)
-        items.each do |item|
-          product_id = item[:id]
-          next unless product_id
-
-          @parsed_ids[product_id.to_s] = 1
-          @product = Product.find_or_initialize_by(
-            marketplace_credential_id: mp_credential.id,
-            product_id:
-          )
-          prepare_product(item)
+        list = items.each_with_object({}) { |item, res| res[item[:id].to_s] = item }
+        exists = []
+        # 1. making changes to existing products
+        Product.where(
+          marketplace_credential_id: mp_credential.id,
+          product_id: list.keys
+        ).find_each do |product|
+          exists << product.product_id
+          product = prepare_product(product, list[product.product_id])
+          @parsed_ids[product.product_id] = 1
           # We can record the changes somewhere.
-          # pp("@product.changes=",@product.changes) if @product.changed?
-          @product.save! if @product.changed?
+          # pp("product.changes=",product.changes) if product.changed?
+          product.save! if product.changed?
         end
+        rest = list.keys - exists
+
+        # 2. adding new products
+        new_products = []
+        rest.each do |id|
+          product = Product.new(
+            marketplace_credential_id: mp_credential.id,
+            product_id: id
+          )
+          new_products << prepare_product(product, list[id])
+          @parsed_ids[id] = 1
+        end
+        Product.import(new_products) if new_products.any?
       end
+      # rubocop:enable Metrics/AbcSize
 
       # rubocop:disable Metrics/AbcSize
-      def prepare_product(item)
-        @product.name           = item.fetch(:name, '')
-        @product.offer_id       = item[:offer_id]
-        @product.stock          = item.dig(:stocks, :present)
-        @product.images         = item[:images]
-        @product.price          = find_price(item)
-        @product.barcodes       = find_barcodes(item)
-        @product.skus           = find_skus(item)
-        @product.category_title = find_category_title(item)
-        @product.status         = find_status(item)
-        @product.schemes        = find_schemes(item)
-        @product.description    = load_description(item)
-        @product.scrub_status   = 'success'
+      def prepare_product(product, item)
+        product.name           = item.fetch(:name, '')
+        product.offer_id       = item[:offer_id]
+        product.stock          = item.dig(:stocks, :present)
+        product.images         = item[:images]
+        product.price          = find_price(item)
+        product.barcodes       = find_barcodes(item)
+        product.skus           = find_skus(item)
+        product.category_title = find_category_title(item)
+        product.status         = find_status(item)
+        product.schemes        = find_schemes(item)
+        product.scrub_status   = 'success'
+        product
       end
       # rubocop:enable Metrics/AbcSize
 
@@ -81,22 +94,8 @@ module Ozon
         item[:sources]&.filter_map { |elem| elem[:source] if elem[:is_enabled] }&.sort
       end
 
-      def load_description(item)
-        status, _, body = @http_client_description.call(
-          body: { product_id: item[:id] }
-        )
-        body.dig(:result, :description) if status == 200
-      rescue MarketplaceAggregator::ApiError => e
-        ErrorLogger.push e
-        # does not matter.
-        # We can allow skip an arror, and deal with the error later
-        # TODO: to send the report somewhere
-        nil
-      end
-
       private :import_payload, :prepare_product, :find_price, :find_barcodes,
-              :find_skus, :find_category_title, :find_status, :find_schemes,
-              :load_description
+              :find_skus, :find_category_title, :find_status, :find_schemes
     end
   end
 end

@@ -6,6 +6,7 @@ module Ozon
   class ProductsDownloader
     module DownloadingScheme
       include Ozon::ProductsDownloader::LoadingInfoList
+      include Ozon::ProductsDownloader::ImportDesriptions
 
       PAGE_LIMIT = 1000
 
@@ -17,6 +18,9 @@ module Ozon
         # 2. download products from the archive
         downloading_archived_products
         Rails.logger.info "import: :mp_credential[#{@mp_credential.id}] — archived[#{@parsed_ids.size - total}] — Done"
+        # 3. download product desriptions
+        downloading_product_desriptions
+        Rails.logger.info "import: :mp_credential[#{@mp_credential.id}] — desriptions[#{@parsed_ids.size}] — Done"
       end
 
       def downloading_archived_products
@@ -32,6 +36,7 @@ module Ozon
       end
 
       # rubocop:disable Metrics/MethodLength
+      # rubocop:disable Metrics/AbcSize
       def circle_downloader
         page_tokens = {}
         loop do
@@ -39,9 +44,9 @@ module Ozon
             body: {
               filter: {
                 visibility: (@archive ? 'ARCHIVED' : 'ALL')
-              }.merge(page_tokens),
+              },
               limit: PAGE_LIMIT
-            }
+            }.merge(page_tokens)
           )
           if status != 200
             # To be safe, but we shouldn't get here.
@@ -54,11 +59,12 @@ module Ozon
           end
 
           # rubocop:disable Lint/RedundantSplatExpansion
-          items = body&.dig(*%i[result items]) || []
+          items = (body&.dig(*%i[result items]) || []).map { |elem| elem[:product_id] }
           # rubocop:enable Lint/RedundantSplatExpansion
           break if items.blank?
 
-          return unless load_info?(items)
+          # return unless load_info?(items)
+          download_product_info_list(items)
 
           # rubocop:disable Lint/RedundantSplatExpansion
           page_token = body&.dig(*%i[result last_id])
@@ -70,20 +76,10 @@ module Ozon
           end
         end
       end
+      # rubocop:enable Metrics/AbcSize
       # rubocop:enable Metrics/MethodLength
 
-      def load_info?(items)
-        # Unfortunately, the marketplace returns data in a circle from the beginning
-        # of the list with last_id equal to the last element of the list of user data.
-        # Therefore, we need to take measures to protect against the "endless cycle".
-        items.map! { |elem| elem[:product_id] }
-        return false if @parsed_ids.key?(items[0].to_s)
-
-        download_product_info_list(items)
-        true
-      end
-
-      private :downloading_archived_products, :downloading_unarchived_products, :circle_downloader, :load_info?
+      private :downloading_archived_products, :downloading_unarchived_products, :circle_downloader
     end
   end
 end

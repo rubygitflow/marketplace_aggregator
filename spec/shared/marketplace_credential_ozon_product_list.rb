@@ -52,10 +52,10 @@ RSpec.shared_context 'with marketplace_credential ozon product/list' do
         {
           body: {
             "filter": {
-              "visibility": 'ALL',
-              "last_id": 'WyI=='
+              "visibility": 'ALL'
             },
-            "limit": 1000
+            "limit": 1000,
+            "last_id": 'WyI=='
           },
           headers: mp_headers
         }
