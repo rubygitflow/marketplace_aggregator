@@ -35,8 +35,6 @@ module Ozon
         circle_downloader
       end
 
-      # rubocop:disable Metrics/MethodLength
-      # rubocop:disable Metrics/AbcSize
       def circle_downloader
         page_tokens = {}
         loop do
@@ -48,22 +46,13 @@ module Ozon
               limit: PAGE_LIMIT
             }.merge(page_tokens)
           )
-          if status != 200
-            # To be safe, but we shouldn't get here.
-            # This is possible if the status is < 400 and the status is != 200.
-            raise MarketplaceAggregator::ApiError.new(
-              status,
-              I18n.t('errors.downloading_the_product_list'),
-              mp_credential.id
-            )
-          end
+          break_if_http_error(status) if status != 200
 
           # rubocop:disable Lint/RedundantSplatExpansion
           items = (body&.dig(*%i[result items]) || []).map { |elem| elem[:product_id] }
           # rubocop:enable Lint/RedundantSplatExpansion
           break if items.blank?
 
-          # return unless load_info?(items)
           download_product_info_list(items)
 
           # rubocop:disable Lint/RedundantSplatExpansion
@@ -76,8 +65,16 @@ module Ozon
           end
         end
       end
-      # rubocop:enable Metrics/AbcSize
-      # rubocop:enable Metrics/MethodLength
+
+      def break_if_http_error(status)
+        # To be safe, but we shouldn't get here.
+        # This is possible if the status is < 400 and the status is != 200.
+        raise MarketplaceAggregator::ApiError.new(
+          status,
+          I18n.t('errors.downloading_the_product_list'),
+          mp_credential.id
+        )
+      end
 
       private :downloading_archived_products, :downloading_unarchived_products, :circle_downloader
     end
