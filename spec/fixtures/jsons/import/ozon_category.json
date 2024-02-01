@@ -1,0 +1,116 @@
+{
+    "result":
+    [
+        {
+            "description_category_id": 15621031,
+            "category_name": "Одежда",
+            "disabled": false,
+            "children":
+            [
+                {
+                    "description_category_id": 200000933,
+                    "category_name": "Одежда",
+                    "disabled": false,
+                    "children":
+                    [
+                        {
+                            "type_name": "Толстовка",
+                            "type_id": 93232,
+                            "disabled": false,
+                            "children":
+                            []
+                        },
+                        {
+                            "type_name": "Веложилет",
+                            "type_id": 970693512,
+                            "disabled": false,
+                            "children":
+                            []
+                        }
+                    ]
+                },
+                {
+                    "description_category_id": 41777465,
+                    "category_name": "Аксессуары",
+                    "disabled": false,
+                    "children":
+                    [
+                        {
+                            "type_name": "Термоперчатки",
+                            "type_id": 93231,
+                            "disabled": false,
+                            "children":
+                            []
+                        },
+                        {
+                            "type_name": "Перчатки",
+                            "type_id": 93171,
+                            "disabled": false,
+                            "children":
+                            []
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "description_category_id": 17027488,
+            "category_name": "Детские товары",
+            "disabled": false,
+            "children":
+            [
+                {
+                    "description_category_id": 17028678,
+                    "category_name": "Стульчики для кормления",
+                    "disabled": false,
+                    "children":
+                    [
+                        {
+                            "type_name": "Аксессуар к стульчикам для кормления",
+                            "type_id": 95399,
+                            "disabled": false,
+                            "children":
+                            []
+                        },
+                        {
+                            "type_name": "Стульчик для кормления",
+                            "type_id": 95400,
+                            "disabled": false,
+                            "children":
+                            []
+                        }
+                    ]
+                },
+                {
+                    "description_category_id": 17028974,
+                    "category_name": "Обучающие игры",
+                    "disabled": false,
+                    "children":
+                    [
+                        {
+                            "type_name": "Домино детское",
+                            "type_id": 970985800,
+                            "disabled": false,
+                            "children":
+                            []
+                        },
+                        {
+                            "type_name": "Диафильм",
+                            "type_id": 92887,
+                            "disabled": false,
+                            "children":
+                            []
+                        },
+                        {
+                            "type_name": "Диапроектор",
+                            "type_id": 92886,
+                            "disabled": false,
+                            "children":
+                            []
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

@@ -31,6 +31,8 @@ gem 'clockwork', '~> 3.0', '>= 3.0.2'
 gem 'faraday', '~> 2.9'
 gem 'faraday-retry', '~> 2.2'
 
+gem 'activerecord-import', '~> 1.5', '>= 1.5.1'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: %i[mri mingw x64_mingw]

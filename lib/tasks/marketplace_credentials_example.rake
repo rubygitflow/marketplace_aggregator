@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-namespace :marketplace_credentials do
+namespace :marketplace_credentials_example do
   desc 'Seeds marketplace credentials'
   task custom_seeds: :environment do
     # The first client

@@ -2,25 +2,28 @@
 
 module Handles
   class ProductsDownloader
-    CARD_STATUS = {
-      'PUBLISHED' => 'published',
-      'CHECKING' => 'on_moderation',
-      'DISABLED_BY_PARTNER' => 'unpublished',
-      'DISABLED_AUTOMATICALLY' => 'unpublished',
-      'REJECTED_BY_MARKET' => 'failed_moderation',
-      'CREATING_CARD' => 'preliminary',
-      'NO_CARD' => 'preliminary',
-      'NO_STOCKS' => 'unpublished'
-    }.freeze
+    extend YandexProductStatus
+    extend OzonProductStatus
 
     class << self
       def from_archive
-        ENV.fetch('PRODUCTS_DOWNLOADER_FROM_ARCHIVE', nil) || false
+        to_bool(ENV.fetch('PRODUCTS_DOWNLOADER_FROM_ARCHIVE', nil)) || false
       end
 
-      def take_card_status(offer)
-        status = offer&.fetch(:campaigns, [])&.first&.fetch(:status, nil)
-        CARD_STATUS.fetch(status, 'preliminary')
+      def ozon_descriptions
+        to_bool(ENV.fetch('PRODUCTS_DOWNLOADER_OZON_DESCRIPTIONS', nil)) || false
+      end
+
+      def to_bool(inp)
+        case inp
+        when String
+          case inp.downcase
+          when '0', 'f', 'false', 'off', 'no'
+            false
+          when '1', 't', 'true', 'on', 'yes'
+            true
+          end
+        end
       end
     end
   end

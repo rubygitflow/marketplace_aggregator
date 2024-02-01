@@ -5,7 +5,8 @@ class Connection
     max: 5,                     # Retry a failed request up to 5 times
     interval: 2,                # First retry after 2s
     backoff_factor: 2,          # Double the delay for each subsequent retry
-    retry_statuses: [500, 503]  # Retry only when we get a 500 or 503 response
+    retry_statuses: [500, 502, 503, 504]
+    # Retry only when we get a 500, 502, 503 or 504 response
   }.freeze
 
   def self.start

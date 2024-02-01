@@ -103,6 +103,8 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
+    activerecord-import (1.5.1)
+      activerecord (>= 4.2)
     addressable (2.8.6)
       public_suffix (>= 2.0.2, < 6.0)
     ast (2.4.2)
@@ -304,6 +306,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  activerecord-import (~> 1.5, >= 1.5.1)
   byebug
   clockwork (~> 3.0, >= 3.0.2)
   database_cleaner-active_record (~> 2.1)

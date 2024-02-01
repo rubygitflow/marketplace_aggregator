@@ -4,8 +4,9 @@ require:
 RSpec/FilePath:
   Enabled: false
 
+# 7
 RSpec/MultipleExpectations:
-  Max: 7
+  Max: 11
 
 # 5
 RSpec/MultipleMemoizedHelpers:
@@ -27,7 +28,7 @@ RSpec/NamedSubject:
 
 RSpec/MessageSpies:
   Enabled: false
-  
+
 AllCops:
   Exclude:
     - bin/**/*
@@ -43,8 +44,9 @@ Style/Documentation:
   Description: 'Document classes and non-namespace modules.'
   Enabled: false
 
+# 20
 Metrics/MethodLength:
-  Max: 20
+  Max: 25
 
 # 40
 Metrics/BlockLength:
@@ -158,3 +160,18 @@ Layout/LineLength:
   Exclude:
     - spec/shared/**/*
     - spec/business_logic/tasks/import_products_spec.rb
+
+Style/NumericLiterals:
+  Exclude:
+    - spec/shared/**/*
+    - spec/factories/**/*
+    - spec/services/ozon/products_downloader/loading_info_list_spec.rb
+    - spec/services/cash_ozon_category_spec.rb
+
+# 7
+Metrics/CyclomaticComplexity:
+  Max: 10
+
+# 7
+Metrics/PerceivedComplexity:
+  Max: 10

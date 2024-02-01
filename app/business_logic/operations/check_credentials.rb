@@ -25,7 +25,7 @@ module Operations
       # 2. Define the class to be called
       checker = @mp_credential.marketplace.to_constant_with(CHECKER_CLASS)
       # 3. Make a HEAD HTTP request
-      @result_valid = checker.new.call(@mp_credential)
+      @result_valid = checker.new(@mp_credential).call
       # 4. Notify client if needed
       notify_client unless @result_valid[:ok]
     rescue StandardError => e

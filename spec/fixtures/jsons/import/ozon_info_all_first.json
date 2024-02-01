@@ -1,0 +1,128 @@
+{
+    "result":
+    {
+        "items":
+        [
+            {
+                "id": 10077600,
+                "name": "Полусапоги детские р.20",
+                "offer_id": "Арт.B.роз р.20",
+                "barcode": "461010135400",
+                "buybox_price": "",
+                "category_id": 91258,
+                "created_at": "2023-09-30T14:01:00.795280Z",
+                "images":
+                [
+                    "https://cdn1.ozone.ru/s3/multimedia-h/6118756313.jpg",
+                    "https://cdn1.ozone.ru/s3/multimedia-d/6118756309.jpg"
+                ],
+                "marketing_price": "234.9000",
+                "min_ozon_price": "",
+                "old_price": "567.0000",
+                "premium_price": "",
+                "price": "333.0000",
+                "recommended_price": "",
+                "min_price": "",
+                "sources":
+                [
+                    {
+                        "is_enabled": true,
+                        "sku": 123567,
+                        "source": "fbo"
+                    },
+                    {
+                        "is_enabled": true,
+                        "sku": 123568,
+                        "source": "fbs"
+                    }
+                ],
+                "stocks":
+                {
+                    "coming": 0,
+                    "present": 1,
+                    "reserved": 1
+                },
+                "errors":
+                [],
+                "vat": "0.0",
+                "visible": true,
+                "visibility_details":
+                {
+                    "has_price": false,
+                    "has_stock": true,
+                    "active_product": false,
+                    "reasons":
+                    {}
+                },
+                "price_index": "0.00",
+                "images360":
+                [],
+                "color_image": "",
+                "primary_image": "https://cdn1.ozone.ru/s3/multimedia-3/6690314259_8p0.jpg",
+                "status":
+                {
+                    "state": "price_sent",
+                    "state_failed": "",
+                    "moderate_status": "",
+                    "decline_reasons":
+                    [],
+                    "validation_state": "success",
+                    "state_name": "Продается",
+                    "state_description": "",
+                    "is_failed": false,
+                    "is_created": true,
+                    "state_tooltip": "",
+                    "item_errors":
+                    [],
+                    "state_updated_at": "2023-11-16T17:10:30.382350Z"
+                },
+                "state": "",
+                "service_type": "IS_CODE_SERVICE",
+                "fbo_sku": 123567,
+                "fbs_sku": 123568,
+                "currency_code": "RUB",
+                "is_kgt": false,
+                "rating": "",
+                "discounted_stocks":
+                {
+                    "coming": 0,
+                    "present": 0,
+                    "reserved": 0
+                },
+                "is_discounted": false,
+                "has_discounted_item": false,
+                "barcodes":
+                [
+                    "461010135400",
+                    "OZN34095273"
+                ],
+                "updated_at": "2023-11-16T17:10:30.382350Z",
+                "price_indexes":
+                {
+                    "price_index": "WITHOUT_INDEX",
+                    "external_index_data":
+                    {
+                        "minimal_price": "",
+                        "minimal_price_currency": "RUB",
+                        "price_index_value": 0
+                    },
+                    "ozon_index_data":
+                    {
+                        "minimal_price": "",
+                        "minimal_price_currency": "RUB",
+                        "price_index_value": 0
+                    },
+                    "self_marketplaces_index_data":
+                    {
+                        "minimal_price": "",
+                        "minimal_price_currency": "RUB",
+                        "price_index_value": 0
+                    }
+                },
+                "sku": 0,
+                "description_category_id": 15621032,
+                "type_id": 0
+            }
+        ]
+    }
+}

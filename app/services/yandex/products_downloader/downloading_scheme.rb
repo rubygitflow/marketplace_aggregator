@@ -9,10 +9,13 @@ module Yandex
       LIMITS = { limit: PAGE_LIMIT }.freeze
 
       def download_products
-        # 1. download products from the archive
-        downloading_archived_products
-        # 2. download products not from the archive
+        # 1. download products not from the archive
         downloading_unarchived_products
+        total = @parsed_ids.size
+        Rails.logger.info "import: :mp_credential[#{@mp_credential.id}] — actual[#{total}] — Done"
+        # 2. download products from the archive
+        downloading_archived_products
+        Rails.logger.info "import: :mp_credential[#{@mp_credential.id}] — archived[#{@parsed_ids.size - total}] — Done"
       end
 
       def downloading_archived_products
@@ -42,7 +45,13 @@ module Yandex
 
             import_payload(items)
           else # any other status anyway
-            raise MarketplaceAggregator::ApiError.new(status, 'something went wrong', mp_credential.id)
+            # To be safe, but we shouldn't get here.
+            # This is possible if the status is < 400 and the status is != 200.
+            raise MarketplaceAggregator::ApiError.new(
+              status,
+              I18n.t('errors.something_went_wrong'),
+              mp_credential.id
+            )
           end
 
           # rubocop:disable Lint/RedundantSplatExpansion

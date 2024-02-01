@@ -36,8 +36,10 @@ jobs:
     env:
       RAILS_ENV: test
       YANDEX_APP_ID: 'f00bae19ad4a4c7d2190f4b1516ea277'
+      OZON_APP_ID: 'OzonSeller'
       DATABASE_URL: "postgres://rails:password@localhost:5432/rails_test"
       PRODUCTS_DOWNLOADER_FROM_ARCHIVE: true
+      PRODUCTS_DOWNLOADER_OZON_DESCRIPTIONS: false
       LIMITING_REMAINING_REQUESTS: 5
     steps:
       - name: Checkout code
