@@ -71,13 +71,10 @@ module Ozon
       def find_category_title(item)
         return if item[:description_category_id].blank? && item[:type_id].blank?
 
-        category = OzonCategory.find_by(
-          description_category_id: item[:description_category_id] || 0,
-          type_id: item[:type_id] || 0
+        CashOzonCategory.get(
+          item[:description_category_id] || 0,
+          item[:type_id] || 0
         )
-        return if category.nil?
-
-        "#{category.category_name}/#{category.type_name}"
       end
 
       def find_status(item)

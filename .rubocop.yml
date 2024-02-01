@@ -166,6 +166,7 @@ Style/NumericLiterals:
     - spec/shared/**/*
     - spec/factories/**/*
     - spec/services/ozon/products_downloader/loading_info_list_spec.rb
+    - spec/services/cash_ozon_category_spec.rb
 
 # 7
 Metrics/CyclomaticComplexity:
