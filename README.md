@@ -33,7 +33,7 @@ $ rails bd:seed
 $ bundle exec sidekiq -C config/sidekiq_live.yml
 $ bundle exec sidekiq -C config/sidekiq_scheduled.yml
 ```
-Seed the Ozon categories by completing the task `rails ozon_categories:load`. This will be done if you have at least one marketplace_credentials from Ozon.
+Before launching the application, seed the current categories from Ozon by completing the task `rails ozon_categories:load`. This will be done if you have at least one marketplace_credentials from Ozon.
 
 * Run Tests
 ```bash
