@@ -3,6 +3,10 @@
 require 'rails_helper'
 
 RSpec.describe Ozon::ProductsDownloader, type: :service do
+  before do
+    ENV['PRODUCTS_DOWNLOADER_FROM_ARCHIVE'] = 'true'
+  end
+
   describe 'successful downloading of new products' do
     include_context 'with marketplace_credential ozon product/list'
     let(:obj) { described_class.new(marketplace_credential) }

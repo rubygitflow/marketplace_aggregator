@@ -6,8 +6,6 @@ module Ozon
   class ProductsDownloader
     module ImportDesriptions
       def downloading_product_desriptions
-        return unless Handles::ProductsDownloader.ozon_descriptions
-
         Product.where(
           marketplace_credential_id: @mp_credential.id,
           product_id: @parsed_ids.keys

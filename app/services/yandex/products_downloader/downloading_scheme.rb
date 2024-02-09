@@ -19,7 +19,7 @@ module Yandex
       end
 
       def downloading_archived_products
-        if Handles::ProductsDownloader.from_archive
+        if Handles::ProductsDownloader.from_archive?
           @archive = true
           circle_downloader
         end

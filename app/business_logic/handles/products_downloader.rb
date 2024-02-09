@@ -6,12 +6,19 @@ module Handles
     extend OzonProductStatus
 
     class << self
-      def from_archive
-        to_bool(ENV.fetch('PRODUCTS_DOWNLOADER_FROM_ARCHIVE', nil)) || false
+      def from_archive?
+        archived_statement?
       end
 
-      def ozon_descriptions
-        to_bool(ENV.fetch('PRODUCTS_DOWNLOADER_OZON_DESCRIPTIONS', nil)) || false
+      def ozon_descriptions?(klass)
+        case klass.name
+        when 'Ozon::ProductsDownloader'
+          ozon_descriptions_statement?
+        when 'Operations::DownloadDescriptions'
+          !ozon_descriptions_statement?
+        else
+          false
+        end
       end
 
       def to_bool(inp)
@@ -24,6 +31,14 @@ module Handles
             true
           end
         end
+      end
+
+      def archived_statement?
+        to_bool(ENV.fetch('PRODUCTS_DOWNLOADER_FROM_ARCHIVE', nil)) || false
+      end
+
+      def ozon_descriptions_statement?
+        to_bool(ENV.fetch('PRODUCTS_DOWNLOADER_OZON_DESCRIPTIONS', nil)) || false
       end
     end
   end

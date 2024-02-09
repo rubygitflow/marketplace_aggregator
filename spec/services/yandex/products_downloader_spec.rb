@@ -8,6 +8,8 @@ RSpec.describe Yandex::ProductsDownloader, type: :service do
     let(:obj) { described_class.new(marketplace_credential) }
 
     before do
+      ENV['PRODUCTS_DOWNLOADER_FROM_ARCHIVE'] = 'true'
+      ENV['PRODUCTS_DOWNLOADER_OZON_DESCRIPTIONS'] = 'false'
       obj.call
     end
 
