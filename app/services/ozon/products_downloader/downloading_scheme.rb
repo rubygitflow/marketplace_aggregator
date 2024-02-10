@@ -16,8 +16,7 @@ module Ozon
         # 2. download products from the archive
         downloading_archived_products
         # 3. download product desriptions
-        downloading_product_desriptions if Handles::ProductsDownloader.ozon_descriptions?(self.class)
-        Rails.logger.info "import: :mp_credential[#{@mp_credential.id}] — desriptions[#{@parsed_ids.size}] — Done"
+        downloading_desriptions
       end
 
       def downloading_archived_products
@@ -37,6 +36,15 @@ module Ozon
         Rails.logger.info(
           "import: :mp_credential[#{@mp_credential.id}] — actual[#{@total}] — Done"
         )
+      end
+
+      def downloading_desriptions
+        if Handles::ProductsDownloader.ozon_descriptions?(self.class)
+          downloading_product_desriptions
+          Rails.logger.info(
+            "import: :mp_credential[#{@mp_credential.id}] — desriptions[#{@parsed_ids.size}] — Done"
+          )
+        end
       end
 
       def circle_downloader

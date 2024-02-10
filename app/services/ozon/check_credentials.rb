@@ -8,7 +8,7 @@ module Ozon
     # Because the HEAD method is not supported by the endpoint
     # https://api-seller.ozon.ru/v2/product/list
     # we use the curl command.
-    # Ozon does not set restrictions on reading data using the REST API
+    # Ozon does not set restrictions on reading data using the REST API, but it works slowly
 
     private
 

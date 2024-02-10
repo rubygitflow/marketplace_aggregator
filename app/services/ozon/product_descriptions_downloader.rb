@@ -34,7 +34,9 @@ module Ozon
                                     status: 'archived')
                              .pluck(:product_id, 0).to_h
         downloading_product_desriptions
-        Rails.logger.info "import: :mp_credential[#{@mp_credential.id}] — archived[#{@parsed_ids.size}] — Done"
+        Rails.logger.info(
+          "import Desriptions: :mp_credential[#{@mp_credential.id}] — archived[#{@parsed_ids.size}] — Done"
+        )
       end
     end
 
@@ -44,7 +46,9 @@ module Ozon
                            .where.not(status: 'archived')
                            .pluck(:product_id, 0).to_h
       downloading_product_desriptions
-      Rails.logger.info "import: :mp_credential[#{@mp_credential.id}] — actual[#{@parsed_ids.size}] — Done"
+      Rails.logger.info(
+        "import Desriptions: :mp_credential[#{@mp_credential.id}] — actual[#{@parsed_ids.size}] — Done"
+      )
     end
   end
 end
