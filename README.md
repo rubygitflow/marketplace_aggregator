@@ -10,7 +10,7 @@ _An example of connecting to marketplaces and downloading data from them_
 - Pre-processing the Rate Limits based on marketplace response headers and Post-processing based on restrictions stored in Kredis;
 - Logging of critical events when interacting with the API of marketplace.
 - Utilizing the Abstract Factory Pattern;
-- Code coverage with RSpec tests;
+- Code coverage with RSpec tests (100%);
 - Enabling GitHub Actions;
 
 Particular emphasis is placed on separating business logic from the algorithmic solution.
@@ -23,7 +23,7 @@ Particular emphasis is placed on separating business logic from the algorithmic 
 ```bash
 $ rails db:create
 $ rails db:schema:load
-$ rails bd:seed
+$ rails db:seed
 ```
 4. Add the existing credentials from marketplaces to the [rake task](https://github.com/rubygitflow/marketplace_aggregator/tree/master/lib/tasks/marketplace_credentials_example.rake)
 5. Seed the marketplace_credentials by completing the task `rails marketplace_credentials_example:custom_seeds`
