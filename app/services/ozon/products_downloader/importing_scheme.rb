@@ -3,11 +3,16 @@
 module Ozon
   class ProductsDownloader
     module ImportingScheme
-      # rubocop:disable Metrics/AbcSize
       def import_payload(items)
         list = items.each_with_object({}) { |item, res| res[item[:id].to_s] = item }
-        exists = []
         # 1. making changes to existing products
+        exists = verify_existing_products(list)
+        # 2. adding new products
+        add_new_products(list, list.keys - exists)
+      end
+
+      def verify_existing_products(list)
+        exists = []
         Product.where(
           marketplace_credential_id: mp_credential.id,
           product_id: list.keys
@@ -19,9 +24,10 @@ module Ozon
           # pp("product.changes=",product.changes) if product.changed?
           product.save! if product.changed?
         end
-        rest = list.keys - exists
+        exists
+      end
 
-        # 2. adding new products
+      def add_new_products(list, rest)
         new_products = []
         rest.each do |id|
           product = Product.new(
@@ -33,7 +39,6 @@ module Ozon
         end
         Product.import(new_products) if new_products.any?
       end
-      # rubocop:enable Metrics/AbcSize
 
       # rubocop:disable Metrics/AbcSize
       def prepare_product(product, item)
@@ -92,7 +97,8 @@ module Ozon
       end
 
       private :import_payload, :prepare_product, :find_price, :find_barcodes,
-              :find_skus, :find_category_title, :find_status, :find_schemes
+              :find_skus, :find_category_title, :find_status, :find_schemes,
+              :verify_existing_products, :add_new_products
     end
   end
 end

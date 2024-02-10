@@ -190,10 +190,9 @@ RSpec.describe Ozon::ProductsDownloader, type: :service do
       end
 
       it 'changes the entry for the same product with new description' do
-        expect(
-          Product.find(product_with_outdated_description.id).updated_at
-        ).to be > old_time_product_with_outdated_description
-        expect(Product.find(product_with_outdated_description.id).description).to eq 'Des_1'
+        p = Product.find(product_with_outdated_description.id)
+        expect(p.updated_at).to be > old_time_product_with_outdated_description
+        expect(p.description).to eq 'Des_1'
       end
     end
   end

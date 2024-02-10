@@ -4,51 +4,93 @@ module Yandex
   class ProductsDownloader
     module ImportingScheme
       def import_payload(items)
-        items.each do |item|
-          offer_id = item[:offer][:offerId]
-          next unless offer_id
+        list = items.each_with_object({}) { |item, res| res[item[:offer][:offerId]] = item }
+        # 1. making changes to existing products
+        exists = verify_existing_products(list)
+        # 2. adding new products
+        add_new_products(list, list.keys - exists)
+      end
 
-          @parsed_ids << offer_id
-          @product = Product.find_or_initialize_by(
-            marketplace_credential_id: mp_credential.id,
-            offer_id:
-          )
-          prepare_product(item)
+      def verify_existing_products(list)
+        exists = []
+        Product.where(
+          marketplace_credential_id: mp_credential.id,
+          offer_id: list.keys
+        ).find_each do |product|
+          exists << product.offer_id
+          product = prepare_product(product, list[product.offer_id])
+          @parsed_ids << product.offer_id
           # We can record the changes somewhere.
-          # pp("@product.changes=",@product.changes) if @product.changed?
-          @product.save! if @product.changed?
+          # pp("product.changes=",product.changes) if product.changed?
+          product.save! if product.changed?
         end
+        exists
+      end
+
+      def add_new_products(list, rest)
+        new_products = []
+        rest.each do |id|
+          product = Product.new(
+            marketplace_credential_id: mp_credential.id,
+            offer_id: id
+          )
+          new_products << prepare_product(product, list[id])
+          @parsed_ids << id
+        end
+        Product.import(new_products) if new_products.any?
       end
 
       # rubocop:disable Metrics/AbcSize
-      def prepare_product(item)
+      def prepare_product(product, item)
         offer = item[:offer]
-        @product.name = offer.fetch(:name, '')
-        @product.barcodes = offer.fetch(:barcodes, [])
-        @product.price = "(#{offer.dig(:basicPrice, :value) || 0},#{offer.dig(:basicPrice, :currencyId) || 'RUR'})".sub(
-          '.0,', ','
-        )
-        @product.status = (@archive ? 'archived' : nil) ||
-                          Handles::ProductsDownloader.take_yandex_card_status(offer)
-        @product.schemes = offer.fetch(:sellingPrograms, []).filter_map do |elem|
-          elem[:sellingProgram] if elem[:status] == 'FINE'
-        end.sort
-        @product.images = offer.fetch(:pictures, [])
-        @product.name = offer.fetch(:name, '')
-        @product.description = offer.fetch(:description, nil)
+        product.name = offer.fetch(:name, '')
+        product.barcodes = offer.fetch(:barcodes, [])
+        product.price = find_price(offer)
+        product.status = find_status(offer)
+        product.schemes = find_schemes(offer)
+        product.images = offer.fetch(:pictures, [])
+        product.name = offer.fetch(:name, '')
+        product.description = offer.fetch(:description, nil)
 
         mapping = item[:mapping]
-        @product.product_id = mapping.fetch(:marketModelId, nil)
-        sku = mapping.fetch(:marketSku, nil)
-        @product.skus = sku ? [sku] : []
+        product.product_id = mapping.fetch(:marketModelId, nil)
+        product.skus = find_skus(mapping)
 
-        @product.category_title = offer.fetch(:category, nil) ||
-                                  mapping.fetch(:marketCategoryName, nil)
-        @product.scrub_status = 'success'
+        product.category_title = find_category_title(offer, mapping)
+        product.scrub_status = 'success'
+        product
       end
       # rubocop:enable Metrics/AbcSize
 
-      private :import_payload, :prepare_product
+      def find_price(offer)
+        "(#{offer.dig(:basicPrice, :value) || 0},#{offer.dig(:basicPrice, :currencyId) || 'RUR'})".sub(
+          '.0,', ','
+        )
+      end
+
+      def find_status(offer)
+        (@archive ? 'archived' : nil) ||
+          Handles::ProductsDownloader.take_yandex_card_status(offer)
+      end
+
+      def find_schemes(offer)
+        offer.fetch(:sellingPrograms, []).filter_map do |elem|
+          elem[:sellingProgram] if elem[:status] == 'FINE'
+        end.sort
+      end
+
+      def find_category_title(offer, mapping)
+        offer.fetch(:category, nil) ||
+          mapping.fetch(:marketCategoryName, nil)
+      end
+
+      def find_skus(mapping)
+        sku = mapping.fetch(:marketSku, nil)
+        sku ? [sku] : []
+      end
+
+      private :import_payload, :prepare_product, :verify_existing_products, :add_new_products,
+              :find_price, :find_status, :find_schemes, :find_category_title, :find_skus
     end
   end
 end
