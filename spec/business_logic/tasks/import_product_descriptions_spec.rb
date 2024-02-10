@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# https://rspec.info/features/3-13/rspec-mocks/basics/spies/
+
 require 'rails_helper'
 
 RSpec.describe Tasks::ImportProductDescriptions, type: :business_logic do
