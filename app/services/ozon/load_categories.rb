@@ -53,9 +53,8 @@ module Ozon
       end
     end
 
-    # rubocop:disable Metrics/AbcSize
     def parse(elem, previous_category)
-      if elem.key?(:description_category_id) && elem[:children].any?
+      if category_id?(elem)
         previous_path = <<~CAT
           #{previous_category[:name]}\
           #{previous_category[:name].empty? ? '' : '/'}\
@@ -78,7 +77,10 @@ module Ozon
         )
       end
     end
-    # rubocop:enable Metrics/AbcSize
+
+    def category_id?(elem)
+      elem.key?(:description_category_id) && elem[:children].any?
+    end
 
     def add_category(previous)
       @imported_list << {

@@ -40,22 +40,24 @@ module Ozon
         Product.import(new_products) if new_products.any?
       end
 
-      # rubocop:disable Metrics/AbcSize
       def prepare_product(product, item)
-        product.name           = item.fetch(:name, '')
-        product.offer_id       = item[:offer_id]
-        product.stock          = item.dig(:stocks, :present)
-        product.images         = item[:images]
-        product.price          = find_price(item)
-        product.barcodes       = find_barcodes(item)
-        product.skus           = find_skus(item)
-        product.category_title = find_category_title(item)
-        product.status         = find_status(item)
-        product.schemes        = find_schemes(item)
-        product.scrub_status   = 'success'
+        product.assign_attributes(
+          {
+            name:           item.fetch(:name, ''),
+            offer_id:       item[:offer_id],
+            barcodes:       find_barcodes(item),
+            price:          find_price(item),
+            status:         find_status(item),
+            schemes:        find_schemes(item),
+            images:         item[:images],
+            skus:           find_skus(item),
+            category_title: find_category_title(item),
+            stock:          item.dig(:stocks, :present),
+            scrub_status:   'success'
+          }
+        )
         product
       end
-      # rubocop:enable Metrics/AbcSize
 
       def find_price(item)
         "(#{item[:marketing_price].to_f},#{item[:currency_code] || 'RUB'})".sub(

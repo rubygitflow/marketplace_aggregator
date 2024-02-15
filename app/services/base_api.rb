@@ -3,6 +3,17 @@
 class BaseApi
   URL = '#marketplace_api_http_domen_name'
 
+  EXACT_ERROR_RAISER = {
+    420 => ->(status, msg, mp_id) { raise MarketplaceAggregator::ApiLimitError.new(status, msg, mp_id) },
+    401 => ->(status, msg, mp_id) { raise MarketplaceAggregator::ApiAccessDeniedError.new(status, msg, mp_id) },
+    403 => ->(status, msg, mp_id) { raise MarketplaceAggregator::ApiAccessDeniedError.new(status, msg, mp_id) }
+  }.freeze
+
+  RANGE_ERROR_RAISER = {
+    (400...500) => ->(status, msg, mp_id) { raise MarketplaceAggregator::ApiBadRequestError.new(status, msg, mp_id) },
+    (500..) => ->(status, msg, mp_id) { raise MarketplaceAggregator::ApiError.new(status, msg, mp_id) }
+  }.freeze
+
   attr_accessor :connection
   attr_reader :response_content_type, :status
 
@@ -67,22 +78,15 @@ class BaseApi
     raise NotImplementedError, "#{self.class}.#{__method__}: #{I18n.t('errors.marketplace_has_not_been_selected')}"
   end
 
-  # rubocop:disable Metrics/AbcSize:
   def raise_error(message)
     return unless @raise_an_error
-    return if status < 400
 
-    if status == 420
-      raise MarketplaceAggregator::ApiLimitError.new(status, message, @marketplace_credential.id)
-    elsif [401, 403].include?(status)
-      raise MarketplaceAggregator::ApiAccessDeniedError.new(status, message, @marketplace_credential.id)
-    elsif (400...500).include?(status)
-      raise MarketplaceAggregator::ApiBadRequestError.new(status, message, @marketplace_credential.id)
-    elsif status >= 500
-      raise MarketplaceAggregator::ApiError.new(status, message, @marketplace_credential.id)
+    EXACT_ERROR_RAISER[status]&.call(status, message, @marketplace_credential.id)
+
+    RANGE_ERROR_RAISER.each do |k, v|
+      v.call(status, message, @marketplace_credential.id) if k.include?(status)
     end
   end
-  # rubocop:enable Metrics/AbcSize:
 
   def content_type(headers)
     case headers.[]('content-type')

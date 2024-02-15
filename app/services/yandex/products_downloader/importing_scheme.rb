@@ -40,27 +40,26 @@ module Yandex
         Product.import(new_products) if new_products.any?
       end
 
-      # rubocop:disable Metrics/AbcSize
       def prepare_product(product, item)
         offer = item[:offer]
-        product.name = offer.fetch(:name, '')
-        product.barcodes = offer.fetch(:barcodes, [])
-        product.price = find_price(offer)
-        product.status = find_status(offer)
-        product.schemes = find_schemes(offer)
-        product.images = offer.fetch(:pictures, [])
-        product.name = offer.fetch(:name, '')
-        product.description = offer.fetch(:description, nil)
-
         mapping = item[:mapping]
-        product.product_id = mapping.fetch(:marketModelId, nil)
-        product.skus = find_skus(mapping)
-
-        product.category_title = find_category_title(offer, mapping)
-        product.scrub_status = 'success'
+        product.assign_attributes(
+          {
+            name:           offer.fetch(:name, ''),
+            barcodes:       offer.fetch(:barcodes, []),
+            price:          find_price(offer),
+            status:         find_status(offer),
+            schemes:        find_schemes(offer),
+            images:         offer.fetch(:pictures, []),
+            description:    offer.fetch(:description, nil),
+            product_id:     mapping.fetch(:marketModelId, nil),
+            skus:           find_skus(mapping),
+            category_title: find_category_title(offer, mapping),
+            scrub_status:   'success'
+          }
+        )
         product
       end
-      # rubocop:enable Metrics/AbcSize
 
       def find_price(offer)
         "(#{offer.dig(:basicPrice, :value) || 0},#{offer.dig(:basicPrice, :currencyId) || 'RUR'})".sub(

@@ -29,13 +29,9 @@ module Products
         @mp_credential.deleted_at
     end
 
-    # rubocop:disable Metrics/AbcSize
     def downloadable?
-      downloader = @mp_credential.marketplace.to_constant_with(DOWNLOADER_CLASS)
-                                 .new(@mp_credential)
-      back_time = Time.now
-      downloader.call
-      Rails.logger.info log(downloader.parsed_ids.size, back_time).strip
+      import
+      true
     rescue NameError => e
       # We are checking the code. It's fixable
       ErrorLogger.push_trace e
@@ -57,7 +53,14 @@ module Products
       # TODO: restart task after an hour (for example)
       false
     end
-    # rubocop:enable Metrics/AbcSize
+
+    def import
+      downloader = @mp_credential.marketplace.to_constant_with(DOWNLOADER_CLASS)
+                                 .new(@mp_credential)
+      back_time = Time.now
+      downloader.call
+      Rails.logger.info log(downloader.parsed_ids.size, back_time).strip
+    end
 
     def log(count, back_time)
       <<~MESSAGE
