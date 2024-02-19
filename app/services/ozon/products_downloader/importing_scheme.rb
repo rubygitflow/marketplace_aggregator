@@ -12,7 +12,12 @@ module Ozon
       end
 
       def verify_existing_products(list)
-        exists = []
+        updated_products, updated_fields, exists = iterate(list)
+        update_products(updated_products, updated_fields) if updated_products.any?
+        exists
+      end
+
+      def iterate(list, exists = [], updated_products = [], updated_fields = [])
         Product.where(
           marketplace_credential_id: mp_credential.id,
           product_id: list.keys
@@ -22,9 +27,25 @@ module Ozon
           @parsed_ids[product.product_id] = 1
           # We can record the changes somewhere.
           # pp("product.changes=",product.changes) if product.changed?
-          product.save! if product.changed?
+          if product.changed?
+            updated_products << product
+            updated_fields += product.changes.keys
+          end
         end
-        exists
+        [updated_products, updated_fields, exists]
+      end
+
+      def update_products(updated_products, updated_fields)
+        Product.import(updated_products,
+                       on_duplicate_key_ignore: true,
+                       on_duplicate_key_update: {
+                         conflict_target: %i[
+                           marketplace_credential_id
+                           product_id
+                           offer_id
+                         ],
+                         columns: updated_fields.uniq.map(&:to_sym)
+                       })
       end
 
       def add_new_products(list, rest)
@@ -60,9 +81,7 @@ module Ozon
       end
 
       def find_price(item)
-        "(#{item[:marketing_price].to_f},#{item[:currency_code] || 'RUB'})".sub(
-          '.0,', ','
-        )
+        "(#{item[:marketing_price].to_f},#{item[:currency_code] || 'RUB'})".sub('.0,', ',')
       end
 
       def find_barcodes(item)
