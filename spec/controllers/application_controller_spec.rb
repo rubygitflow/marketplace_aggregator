@@ -3,15 +3,21 @@
 require 'rails_helper'
 
 RSpec.describe ApplicationController, type: :controller do
-  describe 'GET current_user' do
-    let(:client) { create(:client, :reserved) }
+  let!(:template) { described_class.new }
 
-    before do
-      ENV['USER_UUID'] = client.id
+  describe 'GET marketplace as Ozon' do
+    let!(:marketplace_ozon) { create(:marketplace, :ozon) }
+
+    it 'returns the marketplace by the marketplace name' do
+      expect(template.marketplace('OZON').id).to eq marketplace_ozon.id
     end
+  end
 
-    it 'returns the user by the ENV ID' do
-      expect(described_class.new.current_user.id).to eq client.id
+  describe 'GET marketplace as Yandex.Market' do
+    let!(:marketplace_yandex) { create(:marketplace, :yandex) }
+
+    it 'returns the marketplace by the marketplace label' do
+      expect(template.marketplace('Яндекс.Маркет').id).to eq marketplace_yandex.id
     end
   end
 end

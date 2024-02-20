@@ -35,3 +35,4 @@ en:
     something_went_wrong: 'Something went wrong'
     downloading_the_product_list: 'Something went wrong with downloading the product list'
     downloading_the_product_info_list: 'Something went wrong with downloading the product info list'
+    credentials_are_invalid: 'Invalid registration parameters'
