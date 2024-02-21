@@ -24,6 +24,21 @@ module Api
         end
       end
 
+      def update
+        mp_credential = current_user.marketplace_credentials.find_by(id: params[:id])
+        if mp_credential.nil?
+          render json: {
+            errors: [{
+              code: 'error',
+              title: I18n.t('errors.not_found', class_name: 'MarketplaceCredential')
+            }]
+          }, status: 404
+        else
+          resp, status = Tasks::ReimportProducts.new(true, mp_credential, 'user control').call
+          render json: resp, status:
+        end
+      end
+
       private
 
       def credentials

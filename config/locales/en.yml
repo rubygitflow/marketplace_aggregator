@@ -36,3 +36,9 @@ en:
     downloading_the_product_list: 'Something went wrong with downloading the product list'
     downloading_the_product_info_list: 'Something went wrong with downloading the product info list'
     credentials_are_invalid: 'Invalid registration parameters'
+    too_many_requests: 'Too Many Requests'
+    repeat_after_an_hour: 'Repeat after an hour'
+    not_found: "%{class_name} not found"
+  messages:
+    process_has_started: 'The process has started'
+    check_in_ten_minutes: 'Check your details in 10 minutes'
