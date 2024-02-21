@@ -3,7 +3,7 @@
 module Api
   module V1
     class CredentialsController < ApplicationController
-      before_action :required_find_mp_credential, only: %i[update archive]
+      before_action :required_find_mp_credential, only: %i[update archive descriptions]
 
       def create
         mp_credential = credentials.new(credential_params)
@@ -38,6 +38,17 @@ module Api
           marketplace_credential: {
             id: @mp_credential.id,
             autoload_archives: @mp_credential.autoload_archives.value
+          }
+        }
+      end
+
+      def descriptions
+        value = Handles::ProductsDownloader.to_bool(params[:value])
+        @mp_credential.autoload_descriptions.value = value if value.in? [true, false]
+        render json: {
+          marketplace_credential: {
+            id: @mp_credential.id,
+            autoload_descriptions: @mp_credential.autoload_descriptions.value
           }
         }
       end

@@ -18,6 +18,7 @@ Rails.application.routes.draw do
       resources :credentials, only: %i[create update] do
         member do
           patch :archive
+          patch :descriptions
         end
       end
     end
