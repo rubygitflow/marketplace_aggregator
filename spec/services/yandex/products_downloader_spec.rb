@@ -10,7 +10,6 @@ RSpec.describe Yandex::ProductsDownloader, type: :service do
     context 'when the products still do not exist' do
       before do
         ENV['PRODUCTS_DOWNLOADER_FROM_ARCHIVE'] = 'true'
-        ENV['PRODUCTS_DOWNLOADER_OZON_DESCRIPTIONS'] = 'false'
         obj.call
       end
 

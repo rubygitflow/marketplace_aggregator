@@ -10,17 +10,6 @@ module Handles
         archived_statement?
       end
 
-      def ozon_descriptions?(klass)
-        case klass.name
-        when 'Ozon::ProductsDownloader'
-          ozon_descriptions_statement?
-        when 'Operations::DownloadDescriptions'
-          !ozon_descriptions_statement?
-        else
-          false
-        end
-      end
-
       def to_bool(inp)
         case inp
         when String

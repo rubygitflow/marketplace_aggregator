@@ -6,9 +6,9 @@ RSpec.describe Operations::DownloadDescriptions, type: :business_logic do
   let!(:marketplace_credential) { create(:marketplace_credential, :ozon) }
   let!(:operation) { described_class.new(marketplace_credential) }
 
-  context 'with #ozon_allowed? (inversionto the ENV param)' do
+  context 'with #ozon_allowed? (inversion to the autoload_descriptions value)' do
     before do
-      ENV['PRODUCTS_DOWNLOADER_OZON_DESCRIPTIONS'] = 'false'
+      marketplace_credential.autoload_descriptions.value = false
     end
 
     it 'is true' do
@@ -16,9 +16,9 @@ RSpec.describe Operations::DownloadDescriptions, type: :business_logic do
     end
   end
 
-  context 'with not #ozon_allowed? (inversionto the ENV param)' do
+  context 'with not #ozon_allowed? (inversion to the  autoload_descriptions value)' do
     before do
-      ENV['PRODUCTS_DOWNLOADER_OZON_DESCRIPTIONS'] = 'true'
+      marketplace_credential.autoload_descriptions.value = true
     end
 
     it 'is false' do

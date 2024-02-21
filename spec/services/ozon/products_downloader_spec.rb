@@ -14,9 +14,9 @@ RSpec.describe Ozon::ProductsDownloader, type: :service do
     let!(:category2) { create(:ozon_category, :с_15621032_0) }
 
     context 'when the products still do not exist' do
-      context "with ENV['PRODUCTS_DOWNLOADER_OZON_DESCRIPTIONS'] = 'true'" do
+      context 'with autoload_descriptions.value = true' do
         before do
-          ENV['PRODUCTS_DOWNLOADER_OZON_DESCRIPTIONS'] = 'true'
+          marketplace_credential.autoload_descriptions.value = true
           obj.call
         end
 
@@ -83,9 +83,9 @@ RSpec.describe Ozon::ProductsDownloader, type: :service do
         end
       end
 
-      context "with ENV['PRODUCTS_DOWNLOADER_OZON_DESCRIPTIONS'] = 'false'" do
+      context 'with autoload_descriptions.value = false' do
         before do
-          ENV['PRODUCTS_DOWNLOADER_OZON_DESCRIPTIONS'] = 'false'
+          marketplace_credential.autoload_descriptions.value = false
           obj.call
         end
 
@@ -171,7 +171,7 @@ RSpec.describe Ozon::ProductsDownloader, type: :service do
       let!(:old_time_product_with_outdated_description) { product_with_outdated_description.updated_at }
 
       before do
-        ENV['PRODUCTS_DOWNLOADER_OZON_DESCRIPTIONS'] = 'true'
+        marketplace_credential.autoload_descriptions.value = true
         obj.call
       end
 

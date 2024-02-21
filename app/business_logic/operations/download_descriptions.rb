@@ -14,7 +14,7 @@ module Operations
 
     def ozon_allowed?
       @mp_credential.marketplace.ozon? &&
-        Handles::ProductsDownloader.ozon_descriptions?(self.class)
+        !@mp_credential.autoload_descriptions.value
     end
   end
 end

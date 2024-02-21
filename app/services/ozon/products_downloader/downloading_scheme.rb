@@ -39,7 +39,7 @@ module Ozon
       end
 
       def downloading_desriptions
-        if Handles::ProductsDownloader.ozon_descriptions?(self.class)
+        if @mp_credential.autoload_descriptions.value
           downloading_product_desriptions
           Rails.logger.info(
             "import: :mp_credential[#{@mp_credential.id}] — desriptions[#{@parsed_ids.size}] — Done"
