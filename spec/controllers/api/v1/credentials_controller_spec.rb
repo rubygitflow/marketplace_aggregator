@@ -134,4 +134,40 @@ RSpec.describe Api::V1::CredentialsController, type: :controller do
       end
     end
   end
+
+  describe 'PATCH #archive' do
+    let!(:api_path) { 'archive' }
+    let!(:valid_params) do
+      {
+        'id': marketplace_credential.id,
+        'value': 'true'
+      }
+    end
+    let!(:invalid_params) do
+      {
+        'id': marketplace_credential.id,
+        'value': '-'
+      }
+    end
+
+    before do
+      marketplace_credential.autoload_archives.value = false
+    end
+
+    it 'returns the new value for marketplace_credential' do
+      patch api_path, params: valid_params
+
+      expect(json[:marketplace_credential][:id]).to eq(marketplace_credential.id)
+      expect(json[:marketplace_credential][:autoload_archives]).to eq(true)
+      expect(MarketplaceCredential.find(marketplace_credential.id).autoload_archives.value).to eq(true)
+    end
+
+    it 'returns the old value for marketplace_credential' do
+      patch api_path, params: invalid_params
+
+      expect(json[:marketplace_credential][:id]).to eq(marketplace_credential.id)
+      expect(json[:marketplace_credential][:autoload_archives]).to eq(false)
+      expect(MarketplaceCredential.find(marketplace_credential.id).autoload_archives.value).to eq(false)
+    end
+  end
 end

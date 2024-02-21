@@ -3,6 +3,8 @@
 module Api
   module V1
     class CredentialsController < ApplicationController
+      before_action :required_find_mp_credential, only: %i[update archive]
+
       def create
         mp_credential = credentials.new(credential_params)
         mp_credential.fix_credentials!
@@ -25,21 +27,34 @@ module Api
       end
 
       def update
-        mp_credential = current_user.marketplace_credentials.find_by(id: params[:id])
-        if mp_credential.nil?
+        resp, status = Tasks::ReimportProducts.new(true, @mp_credential, 'user control').call
+        render json: resp, status:
+      end
+
+      def archive
+        value = Handles::ProductsDownloader.to_bool(params[:value])
+        @mp_credential.autoload_archives.value = value if value.in? [true, false]
+        render json: {
+          marketplace_credential: {
+            id: @mp_credential.id,
+            autoload_archives: @mp_credential.autoload_archives.value
+          }
+        }
+      end
+
+      private
+
+      def required_find_mp_credential
+        @mp_credential = current_user.marketplace_credentials.find_by(id: params[:id])
+        if @mp_credential.nil?
           render json: {
             errors: [{
               code: 'error',
               title: I18n.t('errors.not_found', class_name: 'MarketplaceCredential')
             }]
           }, status: 404
-        else
-          resp, status = Tasks::ReimportProducts.new(true, mp_credential, 'user control').call
-          render json: resp, status:
         end
       end
-
-      private
 
       def credentials
         @credentials ||= current_user.marketplace_credentials

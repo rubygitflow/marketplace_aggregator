@@ -15,7 +15,11 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      resources :credentials, only: %i[create update]
+      resources :credentials, only: %i[create update] do
+        member do
+          patch :archive
+        end
+      end
     end
   end
 end
