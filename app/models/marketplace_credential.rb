@@ -10,6 +10,7 @@ class MarketplaceCredential < ApplicationRecord
   kredis_limiter :reimport_products, limit: 3, expires_in: 1.hour
 
   kredis_boolean :autoload_descriptions, default: Handles::ProductsDownloader.ozon_descriptions_statement?
+  kredis_boolean :autoload_archives, default: Handles::ProductsDownloader.archived_statement?
 
   delegate :name,  to: :marketplace
   delegate :logo,  to: :marketplace

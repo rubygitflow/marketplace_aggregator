@@ -6,10 +6,6 @@ module Handles
     extend OzonProductStatus
 
     class << self
-      def from_archive?
-        archived_statement?
-      end
-
       def to_bool(inp)
         case inp
         when String

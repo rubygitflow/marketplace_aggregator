@@ -16,7 +16,7 @@ module Yandex
       end
 
       def downloading_archived_products
-        if Handles::ProductsDownloader.from_archive?
+        if @mp_credential.autoload_archives.value
           @archive = true
           circle_downloader
           Rails.logger.info(

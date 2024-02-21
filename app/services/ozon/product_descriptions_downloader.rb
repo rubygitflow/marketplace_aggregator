@@ -28,7 +28,7 @@ module Ozon
     private
 
     def downloading_archived_product_desriptions
-      if Handles::ProductsDownloader.from_archive?
+      if @mp_credential.autoload_archives.value
         @parsed_ids = Product.where(marketplace_credential_id: mp_credential.id,
                                     scrub_status: 'success',
                                     status: 'archived')
