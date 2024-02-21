@@ -39,6 +39,8 @@ en:
     too_many_requests: 'Too Many Requests'
     repeat_after_an_hour: 'Repeat after an hour'
     not_found: "%{class_name} not found"
+    unauthorized: 'Unauthorized'
+    forbidden: 'Forbidden'
   messages:
     process_has_started: 'The process has started'
     check_in_ten_minutes: 'Check your details in 10 minutes'
