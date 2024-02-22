@@ -100,7 +100,9 @@ RSpec.describe Api::V1::CredentialsController, type: :controller do
           patch api_path, params: valid_params
 
           expect(json[:messages].first[:title]).to eq(I18n.t('messages.process_has_started'))
-          expect(json[:messages].first[:detail]).to eq(I18n.t('messages.check_in_ten_minutes'))
+          expect(json[:messages].first[:detail]).to eq(
+            I18n.t('messages.check_in_ten_minutes', id: marketplace_credential.id)
+          )
         end
 
         it 'returns http Too Many Requests' do

@@ -56,3 +56,38 @@ $ rails c
 irb(main):001> MarketplaceInteraction::ImportProductsJob.perform_now
 ```
 After that, review the changes in the database
+
+* Run HTTP requests
+- Create new Yandex.Market login credentials in the database
+```bash
+http POST :3000/api/v1/credentials USER:registered_user_id \
+"credentials[business_id]=XXXXXX" \
+"credentials[token]=y0_user_token" \
+"marketplace=Yandex" \
+"instance_name=YANDEX_TEST"
+```
+- Create new OZON login credentials in the database
+```bash
+http POST :3000/api/v1/credentials USER:1fbc260d-4669-480d-8c42-659f12b07941 \
+"credentials[client_id]=XXXXX" \
+"credentials[api_key]=user_api_key" \
+"marketplace=OZON" \
+"instance_name=OZON_TEST"
+```
+- Re-import products for marketplace credentials by ID
+```bash
+http POST :3000/api/v1/credentials/:id \
+USER:registered_user_id
+```
+- Enabling/disabling automatic archive downloads for marketplace credentials. The default value is placed in the env variant PRODUCTS_DOWNLOADER_FROM_ARCHIVE.
+```bash
+http PATCH :3000/api/v1/credentials/:id/archive \
+USER:registered_user_id \
+"value=false"
+```
+- Enabling/disabling automatic loading of descriptions for products posted on OZON. The default value is placed in the env variant PRODUCTS_DOWNLOADER_OZON_DESCRIPTIONS.
+```bash
+http PATCH :3000/api/v1/credentials/:id/descriptions \
+USER:registered_user_id \
+"value=true"
+```

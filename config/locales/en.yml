@@ -43,4 +43,4 @@ en:
     forbidden: 'Forbidden'
   messages:
     process_has_started: 'The process has started'
-    check_in_ten_minutes: 'Check your details in 10 minutes'
+    check_in_ten_minutes: 'Check the products for marketplace_credentials %{id} in 10 minutes'

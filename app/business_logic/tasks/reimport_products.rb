@@ -38,7 +38,7 @@ module Tasks
         [{ messages: [{
           code: 'message',
           title: I18n.t('messages.process_has_started'),
-          detail: I18n.t('messages.check_in_ten_minutes')
+          detail: I18n.t('messages.check_in_ten_minutes', id: @mp_credential.id)
         }] }, 200]
       end
     end
