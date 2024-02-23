@@ -68,7 +68,7 @@ http POST :3000/api/v1/credentials USER:registered_user_id \
 ```
 - Create new OZON login credentials in the database
 ```bash
-http POST :3000/api/v1/credentials USER:1fbc260d-4669-480d-8c42-659f12b07941 \
+http POST :3000/api/v1/credentials USER:registered_user_id \
 "credentials[client_id]=XXXXX" \
 "credentials[api_key]=user_api_key" \
 "marketplace=OZON" \
@@ -76,7 +76,7 @@ http POST :3000/api/v1/credentials USER:1fbc260d-4669-480d-8c42-659f12b07941 \
 ```
 - Re-import products for marketplace credentials by ID
 ```bash
-http POST :3000/api/v1/credentials/:id \
+http PATCH :3000/api/v1/credentials/:id \
 USER:registered_user_id
 ```
 - Enabling/disabling automatic archive downloads for marketplace credentials. The default value is placed in the env variant PRODUCTS_DOWNLOADER_FROM_ARCHIVE.
