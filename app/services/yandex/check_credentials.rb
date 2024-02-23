@@ -3,6 +3,7 @@
 # Useful links:
 # https://yandex.ru/dev/market/partner-api/doc/ru/concepts/error-codes
 # https://yandex.ru/dev/market/partner-api/doc/ru/reference/business-assortment/getOfferMappings
+# https://curl.se/docs/manpage.html
 
 module Yandex
   class CheckCredentials < BaseCheckCredentials

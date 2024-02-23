@@ -2,6 +2,7 @@
 
 # Useful links:
 # https://docs.ozon.ru/api/seller/#operation/ProductAPI_GetProductList
+# https://curl.se/docs/manpage.html
 
 module Ozon
   class CheckCredentials < BaseCheckCredentials
