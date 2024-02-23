@@ -57,7 +57,7 @@ irb(main):001> MarketplaceInteraction::ImportProductsJob.perform_now
 ```
 After that, review the changes in the database
 
-* Run HTTP requests
+### Run HTTP requests
 - Create new Yandex.Market login credentials in the database
 ```bash
 http POST :3000/api/v1/credentials USER:registered_user_id \
