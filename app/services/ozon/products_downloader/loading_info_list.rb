@@ -13,9 +13,7 @@ module Ozon
         )
 
         if status == 200
-          # rubocop:disable Lint/RedundantSplatExpansion
-          list = body&.dig(*%i[result items]) || []
-          # rubocop:enable Lint/RedundantSplatExpansion
+          list = body&.dig(:result, :items) || []
           return if list.blank?
 
           import_payload(list)

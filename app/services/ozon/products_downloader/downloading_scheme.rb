@@ -60,16 +60,12 @@ module Ozon
           )
           break_if_http_error(status) if status != 200
 
-          # rubocop:disable Lint/RedundantSplatExpansion
-          items = (body&.dig(*%i[result items]) || []).map { |elem| elem[:product_id] }
-          # rubocop:enable Lint/RedundantSplatExpansion
+          items = (body&.dig(:result, :items) || []).map { |elem| elem[:product_id] }
           break if items.blank?
 
           download_product_info_list(items)
 
-          # rubocop:disable Lint/RedundantSplatExpansion
-          page_token = body&.dig(*%i[result last_id])
-          # rubocop:enable Lint/RedundantSplatExpansion
+          page_token = body&.dig(:result, :last_id)
           if page_token.blank?
             break
           else

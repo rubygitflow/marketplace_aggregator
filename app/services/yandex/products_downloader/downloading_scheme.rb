@@ -40,9 +40,7 @@ module Yandex
             body: { archived: @archive }
           )
           if status == 200
-            # rubocop:disable Lint/RedundantSplatExpansion
-            items = body&.dig(*%i[result offerMappings]) || []
-            # rubocop:enable Lint/RedundantSplatExpansion
+            items = body&.dig(:result, :offerMappings) || []
             break if items.blank?
 
             import_payload(items)
@@ -56,9 +54,7 @@ module Yandex
             )
           end
 
-          # rubocop:disable Lint/RedundantSplatExpansion
-          page_token = body&.dig(*%i[result paging nextPageToken])
-          # rubocop:enable Lint/RedundantSplatExpansion
+          page_token = body&.dig(:result, :paging, :nextPageToken)
           if page_token.blank?
             break
           else
