@@ -18,11 +18,7 @@ module ProductDescriptions
       @mp_credential = MarketplaceCredential.find_by(id: mp_credential_id)
       return if irrelevant?
 
-      downloader = @mp_credential.marketplace.to_constant_with(DOWNLOADER_CLASS)
-                                 .new(@mp_credential)
-      back_time = Time.now
-      downloader.call
-      Rails.logger.info log(downloader.parsed_ids.size, back_time).strip
+      import(@mp_credential.marketplace.to_constant_with(DOWNLOADER_CLASS).new(@mp_credential))
     end
 
     private
@@ -31,6 +27,12 @@ module ProductDescriptions
       @mp_credential.blank? ||
         @mp_credential.credentials.blank? ||
         @mp_credential.deleted_at
+    end
+
+    def import(downloader)
+      back_time = Time.now
+      downloader.call
+      Rails.logger.info log(downloader.parsed_ids.size, back_time).strip
     end
 
     def log(count, back_time)

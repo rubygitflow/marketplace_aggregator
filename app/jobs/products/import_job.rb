@@ -30,7 +30,7 @@ module Products
     end
 
     def downloadable?
-      import
+      import(@mp_credential.marketplace.to_constant_with(DOWNLOADER_CLASS).new(@mp_credential))
       true
     rescue NameError => e
       # We are checking the code. It's fixable
@@ -54,9 +54,7 @@ module Products
       false
     end
 
-    def import
-      downloader = @mp_credential.marketplace.to_constant_with(DOWNLOADER_CLASS)
-                                 .new(@mp_credential)
+    def import(downloader)
       back_time = Time.now
       downloader.call
       Rails.logger.info log(downloader.parsed_ids.size, back_time).strip
