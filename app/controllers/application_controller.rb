@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::API
-  rescue_from(ActionController::InvalidAuthenticityToken) do
+  rescue_from(MarketplaceAggregator::UnauthorizedError) do
     render json: {
       errors: [{
         code: 'error',
@@ -20,7 +20,7 @@ class ApplicationController < ActionController::API
   end
 
   def current_user
-    raise ActionController::InvalidAuthenticityToken unless http_user_uuid
+    raise MarketplaceAggregator::UnauthorizedError unless http_user_uuid
 
     @current_user ||= Client.find_by(id: http_user_uuid)
     raise MarketplaceAggregator::ForbiddenError unless @current_user
