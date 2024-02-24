@@ -57,11 +57,11 @@ module Products
     def import(downloader)
       back_time = Time.now
       downloader.call
-      Rails.logger.info log(downloader.parsed_ids.size, back_time).strip
+      Rails.logger.info log(downloader.parsed_ids.size, back_time)
     end
 
     def log(count, back_time)
-      <<~MESSAGE
+      <<~MESSAGE.squish
         import: :mp_credential[#{@mp_credential.id}] — \
         [#{count}] - \
         OK (in #{(Time.now - back_time).round(3)} sec)
