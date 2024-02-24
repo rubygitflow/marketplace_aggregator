@@ -4,6 +4,7 @@ module Yandex
   class ProductsDownloader
     module DownloadingScheme
       include Yandex::ProductsDownloader::ImportingScheme
+      include MaBenchmarking
 
       PAGE_LIMIT = 200
       LIMITS = { limit: PAGE_LIMIT }.freeze
@@ -18,18 +19,18 @@ module Yandex
       def downloading_archived_products
         if @mp_credential.autoload_archives.value
           @archive = true
-          circle_downloader
-          Rails.logger.info(
-            "import: :mp_credential[#{@mp_credential.id}] — archived[#{@parsed_ids.size - @total}] — Done"
-          )
+          benchmarking(
+            -> { "import: :mp_credential[#{@mp_credential.id}] — archived[#{@parsed_ids.size - @total}] — Done" }
+          ) { circle_downloader }
         end
       end
 
       def downloading_unarchived_products
         @archive = false
-        circle_downloader
+        benchmarking(
+          -> { "import: :mp_credential[#{@mp_credential.id}] — actual[#{@parsed_ids.size}] — Done" }
+        ) { circle_downloader }
         @total = @parsed_ids.size
-        Rails.logger.info "import: :mp_credential[#{@mp_credential.id}] — actual[#{@total}] — Done"
       end
 
       def circle_downloader

@@ -2,6 +2,8 @@
 
 module Products
   class ImportJob < ApplicationJob
+    include MaBenchmarking
+
     queue_as do
       is_client_queue = arguments.first
       if is_client_queue
@@ -55,17 +57,9 @@ module Products
     end
 
     def import(downloader)
-      back_time = Time.now
-      downloader.call
-      Rails.logger.info log(downloader.parsed_ids.size, back_time)
-    end
-
-    def log(count, back_time)
-      <<~MESSAGE.squish
-        import: :mp_credential[#{@mp_credential.id}] — \
-        [#{count}] - \
-        OK (in #{(Time.now - back_time).round(3)} sec)
-      MESSAGE
+      benchmarking(
+        -> { "import: :mp_credential[#{@mp_credential.id}] — [#{downloader.parsed_ids.size}] - OK" }
+      ) { downloader.call }
     end
   end
 end

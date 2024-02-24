@@ -7,6 +7,7 @@ module Ozon
     module DownloadingScheme
       include Ozon::ProductsDownloader::LoadingInfoList
       include Ozon::ProductsDownloader::ImportDesriptions
+      include MaBenchmarking
 
       PAGE_LIMIT = 1000
 
@@ -22,28 +23,25 @@ module Ozon
       def downloading_archived_products
         if @mp_credential.autoload_archives.value
           @archive = true
-          circle_downloader
-          Rails.logger.info(
-            "import: :mp_credential[#{@mp_credential.id}] — archived[#{@parsed_ids.size - @total}] — Done"
-          )
+          benchmarking(
+            -> { "import: :mp_credential[#{@mp_credential.id}] — archived[#{@parsed_ids.size - @total}] — Done" }
+          ) { circle_downloader }
         end
       end
 
       def downloading_unarchived_products
         @archive = false
-        circle_downloader
+        benchmarking(
+          -> { "import: :mp_credential[#{@mp_credential.id}] — actual[#{@parsed_ids.size}] — Done" }
+        ) { circle_downloader }
         @total = @parsed_ids.size
-        Rails.logger.info(
-          "import: :mp_credential[#{@mp_credential.id}] — actual[#{@total}] — Done"
-        )
       end
 
       def downloading_desriptions
         if @mp_credential.autoload_descriptions.value
-          downloading_product_desriptions
-          Rails.logger.info(
-            "import: :mp_credential[#{@mp_credential.id}] — desriptions[#{@parsed_ids.size}] — Done"
-          )
+          benchmarking(
+            -> { "import: :mp_credential[#{@mp_credential.id}] — desriptions[#{@parsed_ids.size}] — Done" }
+          ) { downloading_product_desriptions }
         end
       end
 
@@ -84,7 +82,8 @@ module Ozon
         )
       end
 
-      private :downloading_archived_products, :downloading_unarchived_products, :circle_downloader
+      private :downloading_archived_products, :downloading_unarchived_products, :circle_downloader,
+              :break_if_http_error
     end
   end
 end

@@ -5,6 +5,7 @@
 module Ozon
   class ProductDescriptionsDownloader
     include Ozon::ProductsDownloader::ImportDesriptions
+    include MaBenchmarking
 
     attr_reader :mp_credential, :parsed_ids, :http_client_description
 
@@ -33,10 +34,9 @@ module Ozon
                                     scrub_status: 'success',
                                     status: 'archived')
                              .pluck(:product_id, 0).to_h
-        downloading_product_desriptions
-        Rails.logger.info(
-          "import Desriptions: :mp_credential[#{@mp_credential.id}] — archived[#{@parsed_ids.size}] — Done"
-        )
+        benchmarking(
+          -> { "import Desriptions: :mp_credential[#{@mp_credential.id}] — archived[#{@parsed_ids.size}] — Done" }
+        ) { downloading_product_desriptions }
       end
     end
 
@@ -45,10 +45,9 @@ module Ozon
                                   scrub_status: 'success')
                            .where.not(status: 'archived')
                            .pluck(:product_id, 0).to_h
-      downloading_product_desriptions
-      Rails.logger.info(
-        "import Desriptions: :mp_credential[#{@mp_credential.id}] — actual[#{@parsed_ids.size}] — Done"
-      )
+      benchmarking(
+        -> { "import Desriptions: :mp_credential[#{@mp_credential.id}] — actual[#{@parsed_ids.size}] — Done" }
+      ) { downloading_product_desriptions }
     end
   end
 end

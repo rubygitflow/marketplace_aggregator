@@ -36,6 +36,7 @@ module Yandex
       end
 
       def update_products(updated_products, updated_fields)
+        Rails.logger.error "updated_fields.uniq.map(&:to_sym) = #{updated_fields.uniq.map(&:to_sym)}"
         Product.import(updated_products,
                        on_duplicate_key_ignore: true,
                        on_duplicate_key_update: {
