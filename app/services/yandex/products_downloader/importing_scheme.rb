@@ -27,7 +27,7 @@ module Yandex
           product = prepare_product(product, list[product.offer_id])
           # We can record the changes somewhere.
           # pp("product.changes=",product.changes) if product.changed?
-          if product.changed?
+          if product.changed? && imported?(product)
             updated_products << product
             updated_fields += product.changes.keys
           end
@@ -35,8 +35,17 @@ module Yandex
         [updated_products, updated_fields, exists]
       end
 
+      def imported?(product)
+        # it isn't possible to import a product if product_id has been changed
+        if product.changes.keys.include?('product_id')
+          product.save!
+          false
+        else
+          true
+        end
+      end
+
       def update_products(updated_products, updated_fields)
-        Rails.logger.error "updated_fields.uniq.map(&:to_sym) = #{updated_fields.uniq.map(&:to_sym)}"
         Product.import(updated_products,
                        on_duplicate_key_ignore: true,
                        on_duplicate_key_update: {
@@ -109,7 +118,8 @@ module Yandex
       end
 
       private :import_payload, :prepare_product, :verify_existing_products, :add_new_products,
-              :find_price, :find_status, :find_schemes, :find_category_title, :find_skus
+              :find_price, :find_status, :find_schemes, :find_category_title, :find_skus,
+              :iterate, :update_products, :imported?
     end
   end
 end
