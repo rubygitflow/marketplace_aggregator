@@ -16,7 +16,7 @@ _An example of connecting to marketplaces and downloading data from them_
 Particular emphasis is placed on separating business logic from the algorithmic solution.
 
 
-### Install
+## Install
 1. Clone this app from GitHub
 2. Run `bundle i` from the app folder
 3. Install DB:
@@ -28,7 +28,7 @@ $ rails db:seed
 4. Add the existing credentials from marketplaces to the [rake task](https://github.com/rubygitflow/marketplace_aggregator/tree/master/lib/tasks/marketplace_credentials_example.rake)
 5. Seed the marketplace_credentials by completing the task `rails marketplace_credentials_example:custom_seeds`
 
-### Run Sidekiq
+## Run Sidekiq
 ```bash
 $ bundle exec sidekiq -C config/sidekiq_live.yml
 $ bundle exec sidekiq -C config/sidekiq_scheduled.yml
@@ -45,7 +45,7 @@ Look at the test coverage:
 $ open coverage/index.html
 ```
 
-### Import products from marketplaces
+## Import products from marketplaces
 Scheduled launch
 ```bash
 $ clockwork clock.rb
@@ -57,7 +57,7 @@ irb(main):001> MarketplaceInteraction::ImportProductsJob.perform_now
 ```
 After that, review the changes in the database
 
-### Run HTTP requests
+## Run HTTP requests
 - Create new Yandex.Market login credentials in the database
 ```bash
 http POST :3000/api/v1/credentials USER:registered_user_id \
