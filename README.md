@@ -15,6 +15,7 @@ _An example of connecting to marketplaces and downloading data from them_
 
 Particular emphasis is placed on separating business logic from the algorithmic solution.
 
+Article: https://habr.com/ru/articles/796169/
 
 ## Install
 1. Clone this app from GitHub
