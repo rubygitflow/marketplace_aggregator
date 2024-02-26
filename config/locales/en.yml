@@ -44,3 +44,4 @@ en:
   messages:
     process_has_started: 'The process has started'
     check_in_ten_minutes: 'Check the products for marketplace_credentials %{id} in 10 minutes'
+    users_control: "User's control"

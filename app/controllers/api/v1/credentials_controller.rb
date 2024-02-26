@@ -27,7 +27,7 @@ module Api
       end
 
       def update
-        resp, status = Tasks::ReimportProducts.new(true, @mp_credential, 'user control').call
+        resp, status = Tasks::ReimportProducts.new(true, @mp_credential, I18n.t('messages.users_control')).call
         render json: resp, status:
       end
 
