@@ -4,27 +4,27 @@ module Yandex
   class ProductsDownloader
     module ImportingScheme
       def import_payload(items)
-        list = items.each_with_object({}) { |item, res| res[item[:offer][:offerId]] = item }
+        list_by_id = items.index_by { |elem| elem[:offer][:offerId] }
         # 1. making changes to existing products
-        exists = verify_existing_products(list)
+        exists = verify_existing_products(list_by_id)
         # 2. adding new products
-        add_new_products(list, list.keys - exists)
+        add_new_products(list_by_id, list_by_id.keys - exists)
       end
 
-      def verify_existing_products(list)
-        updated_products, updated_fields, exists = iterate(list)
+      def verify_existing_products(list_by_id)
+        updated_products, updated_fields, exists = iterate(list_by_id)
         @parsed_ids += exists
         update_products(updated_products, updated_fields) if updated_products.any?
         exists
       end
 
-      def iterate(list, exists = [], updated_products = [], updated_fields = [])
+      def iterate(list_by_id, exists = [], updated_products = [], updated_fields = [])
         Product.where(
           marketplace_credential_id: mp_credential.id,
-          offer_id: list.keys
+          offer_id: list_by_id.keys
         ).find_each do |product|
           exists << product.offer_id
-          product = prepare_product(product, list[product.offer_id])
+          product = prepare_product(product, list_by_id[product.offer_id])
           # We can record the changes somewhere.
           # pp("product.changes=",product.changes) if product.changed?
           if product.changed? && imported?(product)
@@ -58,14 +58,14 @@ module Yandex
                        })
       end
 
-      def add_new_products(list, rest)
+      def add_new_products(list_by_id, rest)
         new_products = []
         rest.each do |id|
           product = Product.new(
             marketplace_credential_id: mp_credential.id,
             offer_id: id
           )
-          new_products << prepare_product(product, list[id])
+          new_products << prepare_product(product, list_by_id[id])
           @parsed_ids << id
         end
         Product.import(new_products) if new_products.any?
