@@ -4,7 +4,7 @@ module Ozon
   class ProductsDownloader
     module ImportingScheme
       def import_payload(items)
-        list = items.each_with_object({}) { |item, res| res[item[:id].to_s] = item }
+        list = items.index_by { |elem| elem[:id].to_s }
         # 1. making changes to existing products
         exists = verify_existing_products(list)
         # 2. adding new products
