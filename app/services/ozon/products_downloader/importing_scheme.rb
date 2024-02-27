@@ -4,26 +4,26 @@ module Ozon
   class ProductsDownloader
     module ImportingScheme
       def import_payload(items)
-        list = items.index_by { |elem| elem[:id].to_s }
+        list_by_id = items.index_by { |elem| elem[:id].to_s }
         # 1. making changes to existing products
-        exists = verify_existing_products(list)
+        exists = verify_existing_products(list_by_id)
         # 2. adding new products
-        add_new_products(list, list.keys - exists)
+        add_new_products(list_by_id, list_by_id.keys - exists)
       end
 
-      def verify_existing_products(list)
-        updated_products, updated_fields, exists = iterate(list)
+      def verify_existing_products(list_by_id)
+        updated_products, updated_fields, exists = iterate(list_by_id)
         update_products(updated_products, updated_fields) if updated_products.any?
         exists
       end
 
-      def iterate(list, exists = [], updated_products = [], updated_fields = [])
+      def iterate(list_by_id, exists = [], updated_products = [], updated_fields = [])
         Product.where(
           marketplace_credential_id: mp_credential.id,
-          product_id: list.keys
+          product_id: list_by_id.keys
         ).find_each do |product|
           exists << product.product_id
-          product = prepare_product(product, list[product.product_id])
+          product = prepare_product(product, list_by_id[product.product_id])
           @parsed_ids[product.product_id] = 1
           # We can record the changes somewhere.
           # pp("product.changes=",product.changes) if product.changed?
@@ -48,14 +48,14 @@ module Ozon
                        })
       end
 
-      def add_new_products(list, rest)
+      def add_new_products(list_by_id, rest)
         new_products = []
         rest.each do |id|
           product = Product.new(
             marketplace_credential_id: mp_credential.id,
             product_id: id
           )
-          new_products << prepare_product(product, list[id])
+          new_products << prepare_product(product, list_by_id[id])
           @parsed_ids[id] = 1
         end
         Product.import(new_products) if new_products.any?
