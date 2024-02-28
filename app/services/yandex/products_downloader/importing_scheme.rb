@@ -37,7 +37,7 @@ module Yandex
 
       def imported?(product)
         # it isn't possible to import a product if product_id has been changed
-        if product.changes.keys.include?('product_id')
+        if product.changes.key?('product_id')
           product.save!
           false
         else

@@ -1,33 +1,6 @@
-require:
-  - rubocop-rspec
-
-RSpec/FilePath:
-  Enabled: false
-
-# 7
-RSpec/MultipleExpectations:
-  Max: 11
-
-# 5
-RSpec/MultipleMemoizedHelpers:
-  Max: 25
-
-RSpec/LetSetup:
-  Enabled: false
-
-# 10
-RSpec/ExampleLength:
-  Max: 35
-
-# 3
-RSpec/NestedGroups:
-  Max: 7
-
-RSpec/NamedSubject:
-  Enabled: false
-
-RSpec/MessageSpies:
-  Enabled: false
+inherit_from:
+  - rubocop.rspec.yml
+  - rubocop.performance.yml
 
 AllCops:
   Exclude:

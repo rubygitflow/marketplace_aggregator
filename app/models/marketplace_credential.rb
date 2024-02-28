@@ -39,7 +39,7 @@ class MarketplaceCredential < ApplicationRecord
       business_id = credentials['business_id']
       if business_id.match?(/[^(0-9)]/)
         credentials['business_id'] =
-          business_id.split(/[^(0-9)]/).select { |s| s.match?(/[0-9]{7}/) }.first
+          business_id.split(/[^(0-9)]/).find { |s| s.match?(/[0-9]{7}/) }
       end
     end
     credentials
