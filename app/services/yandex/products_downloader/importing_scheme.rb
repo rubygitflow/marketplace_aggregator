@@ -73,7 +73,7 @@ module Yandex
 
       def prepare_product(product, item)
         offer = item[:offer]
-        mapping = item[:mapping]
+        mapping = item[:mapping] || {}
         product.assign_attributes(
           {
             name:           offer.fetch(:name, ''),

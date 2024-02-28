@@ -7,51 +7,17 @@ RSpec.shared_context 'with marketplace_credential yandex offer-mappings' do
       "https://api.partner.market.yandex.ru/businesses/#{marketplace_credential.credentials.[]('business_id')}/offer-mappings.json{?limit}"
     )
   end
-  let!(:uri_template2) do
-    Addressable::Template.new(
-      "https://api.partner.market.yandex.ru/businesses/#{marketplace_credential.credentials.[]('business_id')}/offer-mappings.json?limit=200&page_token=222"
-    )
-  end
-  let!(:uri_template3) do
+  let!(:uri_template1) do
     Addressable::Template.new(
       "https://api.partner.market.yandex.ru/businesses/#{marketplace_credential.credentials.[]('business_id')}/offer-mappings.json?limit=200&page_token=111"
     )
   end
+  let!(:uri_template2) do
+    Addressable::Template.new(
+      "https://api.partner.market.yandex.ru/businesses/#{marketplace_credential.credentials.[]('business_id')}/offer-mappings.json?limit=1&page_token=222"
+    )
+  end
   let!(:stub0) do
-    stub_request(:any, uri_template)
-      .with(
-        {
-          body: { archived: false },
-          headers: {
-            'Authorization' => "OAuth oauth_token=\"#{marketplace_credential.credentials.[]('token')}\", oauth_client_id=\"#{ENV.fetch('YANDEX_APP_ID')}\"",
-            'Content-Type' => 'application/json'
-          }
-        }
-      )
-      .to_return(
-        body: load_json('import/yandex_info_3'),
-        status: 200,
-        headers: { 'Content-Type' => 'application/json;charset=utf-8' }
-      )
-  end
-  let!(:stub1) do
-    stub_request(:any, uri_template)
-      .with(
-        {
-          body: { archived: true },
-          headers: {
-            'Authorization' => "OAuth oauth_token=\"#{marketplace_credential.credentials.[]('token')}\", oauth_client_id=\"#{ENV.fetch('YANDEX_APP_ID')}\"",
-            'Content-Type' => 'application/json'
-          }
-        }
-      )
-      .to_return(
-        body: load_json('import/yandex_info_2'),
-        status: 200,
-        headers: { 'Content-Type' => 'application/json;charset=utf-8' }
-      )
-  end
-  let!(:stub2) do
     stub_request(:any, uri_template)
       .with(
         {
@@ -68,8 +34,25 @@ RSpec.shared_context 'with marketplace_credential yandex offer-mappings' do
         headers: { 'Content-Type' => 'application/json;charset=utf-8' }
       )
   end
-  let!(:stub3) do
-    stub_request(:any, uri_template3)
+  let!(:stub1) do
+    stub_request(:any, uri_template1)
+      .with(
+        {
+          body: { archived: false },
+          headers: {
+            'Authorization' => "OAuth oauth_token=\"#{marketplace_credential.credentials.[]('token')}\", oauth_client_id=\"#{ENV.fetch('YANDEX_APP_ID')}\"",
+            'Content-Type' => 'application/json'
+          }
+        }
+      )
+      .to_return(
+        body: load_json('import/yandex_info_2'),
+        status: 200,
+        headers: { 'Content-Type' => 'application/json;charset=utf-8' }
+      )
+  end
+  let!(:stub2) do
+    stub_request(:any, uri_template2)
       .with(
         {
           body: { archived: false },
@@ -81,6 +64,23 @@ RSpec.shared_context 'with marketplace_credential yandex offer-mappings' do
       )
       .to_return(
         body: load_json('import/yandex_info_0'),
+        status: 200,
+        headers: { 'Content-Type' => 'application/json;charset=utf-8' }
+      )
+  end
+  let!(:stub_arch) do
+    stub_request(:any, uri_template)
+      .with(
+        {
+          body: { archived: true },
+          headers: {
+            'Authorization' => "OAuth oauth_token=\"#{marketplace_credential.credentials.[]('token')}\", oauth_client_id=\"#{ENV.fetch('YANDEX_APP_ID')}\"",
+            'Content-Type' => 'application/json'
+          }
+        }
+      )
+      .to_return(
+        body: load_json('import/yandex_info_arch'),
         status: 200,
         headers: { 'Content-Type' => 'application/json;charset=utf-8' }
       )
