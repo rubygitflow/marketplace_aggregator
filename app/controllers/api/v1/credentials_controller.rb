@@ -22,7 +22,7 @@ module Api
               title: I18n.t('errors.credentials_are_invalid'),
               detail: @mp_credential.credentials['errors']
             }]
-          }, status: 400
+          }, status: :bad_request
         end
       end
 
@@ -63,7 +63,7 @@ module Api
               code: 'error',
               title: I18n.t('errors.not_found', class_name: 'MarketplaceCredential')
             }]
-          }, status: 404
+          }, status: :not_found
         else
           @mp_credential
         end

@@ -11,8 +11,8 @@ module Yandex
     # }
     def do_sleep(headers, duration)
       dt =
-        Time.parse(headers['X-RateLimit-Resource-Until']) -
-        Time.parse(headers['Date']) +
+        Time.parse(headers['X-RateLimit-Resource-Until']).to_f -
+        Time.parse(headers['Date']).to_f +
         1
       if dt > duration
         Rails.logger.error I18n.t('errors.duration_of_rate_limit_has_been_changed',

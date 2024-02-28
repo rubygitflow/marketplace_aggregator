@@ -85,7 +85,7 @@ module Ozon
       end
 
       def find_barcodes(item)
-        item[:barcodes].blank? ? item[:barcode] : item[:barcodes]
+        item[:barcodes].presence || [item[:barcode]]
       end
 
       def find_skus(item)

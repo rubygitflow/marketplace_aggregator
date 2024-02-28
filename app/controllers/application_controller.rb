@@ -7,7 +7,7 @@ class ApplicationController < ActionController::API
         code: 'error',
         title: I18n.t('errors.unauthorized')
       }]
-    }, status: 401
+    }, status: :unauthorized
   end
 
   rescue_from(MarketplaceAggregator::ForbiddenError) do
@@ -16,7 +16,7 @@ class ApplicationController < ActionController::API
         code: 'error',
         title: I18n.t('errors.forbidden')
       }]
-    }, status: 403
+    }, status: :forbidden
   end
 
   def current_user
@@ -29,8 +29,8 @@ class ApplicationController < ActionController::API
   end
 
   def marketplace(attr)
-    @marketplace = Marketplace.find_by_name(attr.capitalize) ||
-                   Marketplace.find_by_label(attr)
+    @marketplace = Marketplace.find_by(name: attr.capitalize) ||
+                   Marketplace.find_by(label: attr)
   end
 
   private
